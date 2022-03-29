@@ -1,11 +1,13 @@
-# [Título del trabajo]
+# [Chess Masters]
 
-[Descripción breve del proyecto a realizar (2-3 frases).]
+[Nuestro proyecto consiste en realizar un juego de ajedrez usando el lenguaje de programación C.]
 
 ## Integrantes del equipo
 
-[Nombres, apellidos, y usuario GitHub de los integrantes del equipo.]
+[Diego Sanz Vilanova @diegosanzvilanova
+Ricardo Oprandi Perez @roprandi11
+Alberto Martínez García-Gasco @albertogasco.]
 
 ## Objetivos del trabajo
 
-[Lista de los objetivos que se persiguen con el trabajo propuesto.]
+[Aplicar los conceptos aprendidos en la asignatura para la realización del trabajo.]
