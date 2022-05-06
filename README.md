@@ -4,9 +4,9 @@ Nuestro proyecto consiste en realizar un juego de ajedrez usando el lenguaje de 
 
 ## Integrantes del equipo
 
-Diego Sanz Vilanova @diegosanzvilanova
-Ricardo Oprandi Perez @roprandi11
-Alberto Martínez García-Gasco @albertogasco.
+Diego Sanz Vilanova @diegosanzvilanova<br/>
+Ricardo Oprandi Perez @roprandi11<br/>
+Alberto Martínez García-Gasco @albertogasco.<br/>
 
 ## Objetivos del trabajo
 
