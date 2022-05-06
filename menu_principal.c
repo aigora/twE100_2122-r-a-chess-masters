@@ -42,7 +42,7 @@ switch(menu){
 
                 switch (cronometro){
                     case 1:
-                        printf("\nHa seleccionado 15 minutos\n\n);
+                        printf("\nHa seleccionado 15 minutos\n\n");
                         printf("Jugador de negras: Introduzca su nombre\n");
                         //actualizar los datos en el struct
                         printf("Jugador de blancas: Introduzca su nombre\n");
@@ -50,7 +50,7 @@ switch(menu){
 
                         printf("\nINICIANDO  PARTIDA, %s contra %s\n", blancas.name,negras.name);
                     case 2:
-                        printf("\nHa seleccionado 10 minutos\n\n);
+                        printf("\nHa seleccionado 10 minutos\n\n");
                         printf("Jugador de negras: Introduzca su nombre\n");
                         //actualizar los datos en el struct
                         printf("Jugador de blancas: Introduzca su nombre\n");
@@ -58,7 +58,7 @@ switch(menu){
 
                         printf("\nINICIANDO  PARTIDA, %s contra %s\n", blancas.name,negras.name);
                     case 3:
-                        printf("\nHa seleccionado 5 minutos\n\n);
+                        printf("\nHa seleccionado 5 minutos\n\n");
                         printf("Jugador de negras: Introduzca su nombre\n");
                         //actualizar los datos en el struct
                         printf("Jugador de blancas: Introduzca su nombre\n");
@@ -66,7 +66,7 @@ switch(menu){
 
                         printf("\nINICIANDO  PARTIDA, %s contra %s\n", blancas.name,negras.name);
                     case 4:
-                        printf("\nHa seleccionado 1 minuto\n\n);
+                        printf("\nHa seleccionado 1 minuto\n\n");
                         printf("Jugador de negras: Introduzca su nombre\n");
                         //actualizar los datos en el struct
                         printf("Jugador de blancas: Introduzca su nombre\n");
