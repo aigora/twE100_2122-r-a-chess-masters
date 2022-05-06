@@ -6,8 +6,8 @@ void imprimir_tablero(char tablero[8][8]);
 
 int main(){
     char tablero[8][8];
-    tablero_inicial(tablero[8][8]);
-    imprimir_tablero(tablero[8][8]);
+    tablero_inicial(tablero);
+    imprimir_tablero(tablero);
     
      
     
@@ -54,7 +54,7 @@ void imprimir_tablero(char tablero[8][8]){
     printf("\n");
     printf("   ");
     for(j=0;j<8;j++){
-        printf(" %c",i+97);
+        printf(" %c",j+97);
     }
+    printf("\n\n");
 }
-
