@@ -487,38 +487,6 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
                 return 1;
             }
         }
-
-        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+8][*j_inicial+8])) {//(+8,+8)
-            if ((*i_final<8)&&(*j_final<8)) {
-                return 0;
-            }else{
-                return 1;
-            }
-        }
-
-        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-8][*j_inicial-8])) {//(-8,-8)
-            if ((*i_final>=0)&&(*j_final>=0)) {
-                return 0;
-            }else{
-                return 1;
-            }
-        }
-
-        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-8][*j_inicial+8])) {//(-8,+8)
-            if ((*i_final>=0)&&(*j_final<8)) {
-                return 0;
-            }else{
-                return 1;
-            }
-        }
-
-        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+8][*j_inicial-8])) {//(+8,-8)
-            if ((*i_final<8)&&(*j_final<=0)) {
-                return 0;
-            }else{
-                return 1;
-            }
-        }
     }
 
     if ((tablero[*i_inicial][*j_inicial])=='a') {//alfil blancas
@@ -740,38 +708,6 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+7][*j_inicial-7])) {//(+7,-7)
-            if ((*i_final<8)&&(*j_final<=0)) {
-                return 0;
-            }else{
-                return 1;
-            }
-        }
-
-        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+8][*j_inicial+8])) {//(+8,+8)
-            if ((*i_final<8)&&(*j_final<8)) {
-                return 0;
-            }else{
-                return 1;
-            }
-        }
-
-        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-8][*j_inicial-8])) {//(-8,-8)
-            if ((*i_final>=0)&&(*j_final>=0)) {
-                return 0;
-            }else{
-                return 1;
-            }
-        }
-
-        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-8][*j_inicial+8])) {//(-8,+8)
-            if ((*i_final>=0)&&(*j_final<8)) {
-                return 0;
-            }else{
-                return 1;
-            }
-        }
-
-        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+8][*j_inicial-8])) {//(+8,-8)
             if ((*i_final<8)&&(*j_final<=0)) {
                 return 0;
             }else{
