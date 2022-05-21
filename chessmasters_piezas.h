@@ -70,6 +70,7 @@ int peones (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
                 return 1;
             }
         }
+    }
 }
 
 int caballos (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]){
