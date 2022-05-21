@@ -48,7 +48,7 @@ void imprimir_tablero(char tablero[8][8]){//imprime por pantalla el tablero
 }
 
 int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]){ //informa sobre si se puede realizar el movimiento indicado
-    int comprobar_diagonales=1,i,j;
+    
     
     if (((tablero[*i_inicial][*j_inicial])=='P')||((tablero[*i_inicial][*j_inicial])=='p')) {
         if (peones==0) {
@@ -81,8 +81,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
     if ((tablero[*i_inicial][*j_inicial])=='t') { //torre blancas
         }
     
-    /*
-     */
+
     
     if ((tablero[*i_inicial][*j_inicial])=='R') { //rey negras
         

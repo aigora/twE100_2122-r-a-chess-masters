@@ -212,7 +212,7 @@ int caballos (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
 }
 
 int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]){
-    
+    int comprobar_diagonales=1,i,j;
     if ((tablero[*i_inicial][*j_inicial])=='A') { //alfil negras
     
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial+1])) {//(+1,+1)
