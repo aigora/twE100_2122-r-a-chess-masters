@@ -548,6 +548,7 @@ int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
 
 int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]) {
     
+    int comprobar_diagonales=0, comprobar_ejes=0, i, j;
     
     if ((tablero[*i_inicial][*j_inicial])=='D') { //dama negras
         if ((tablero[*i_final][*j_final]>='a')||(tablero[*i_final][*j_final]=='.')) {
