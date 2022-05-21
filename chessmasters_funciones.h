@@ -750,6 +750,141 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
     }
     
+    if ((tablero[*i_inicial][*j_inicial])=='R') { //rey negras
+        
+        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial+1])) {//(+1,+1)
+            if ((*i_final<8)&&(*j_final<8)) {
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+        
+        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial+1])) {//(-1,+1)
+            if ((*i_final>=0)&&(*j_final<8)) {
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+
+        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial-1])) {//(-1,-1)
+            if ((*i_final>=0)&&(*j_final>=0)) {
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+
+        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial-1])) {//(+1,-1)
+            if ((*i_final<8)&&(*j_final>=0)) {
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+
+        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial])) {//(+1,0)
+            if ((*i_final<8)) {
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+
+        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial])) {//(-1,0)
+            if ((*i_final>=0)) {
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+
+        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial][*j_inicial+1])) {//(0,+1)
+            if ((*j_final<8)) {
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+
+        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial][*j_inicial-1])) {//(0,-1)
+            if ((*j_final>=0)) {
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+    }
+    
+     if ((tablero[*i_inicial][*j_inicial])=='r') { //rey blancas
+        
+        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial+1])) {//(+1,+1)
+            if ((*i_final<8)&&(*j_final<8)) {
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+        
+        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial+1])) {//(-1,+1)
+            if ((*i_final>=0)&&(*j_final<8)) {
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+
+        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial-1])) {//(-1,-1)
+            if ((*i_final>=0)&&(*j_final>=0)) {
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+
+        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial-1])) {//(+1,-1)
+            if ((*i_final<8)&&(*j_final>=0)) {
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+
+        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial])) {//(+1,0)
+            if ((*i_final<8)) {
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+
+        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial])) {//(-1,0)
+            if ((*i_final>=0)) {
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+
+        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial][*j_inicial+1])) {//(0,+1)
+            if ((*j_final<8)) {
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+
+        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial][*j_inicial-1])) {//(0,-1)
+            if ((*j_final>=0)) {
+                return 0;
+            }else{
+                return 1;
+            }
+        }
+    }
+    
+    
     
     return 1;
 }
