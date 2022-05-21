@@ -74,19 +74,6 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
     if (((tablero[*i_inicial][*j_inicial])=='D')||((tablero[*i_inicial][*j_inicial])=='d')) {
         return damas;
     }
-    
-    
-    
-    
-   
-
-   
-    
-    
-    
-    
-    
-    
-   
+  
 }
 

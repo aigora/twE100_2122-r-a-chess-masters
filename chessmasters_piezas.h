@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int peones (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]){
+int peones (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]) {
     if ((tablero[*i_inicial][*j_inicial])=='P') { //peon negras 4 movimientos posibles
         
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial][*j_inicial+1])) {
@@ -73,7 +73,7 @@ int peones (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
     }
 }
 
-int caballos (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]){
+int caballos (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]) {
     if ((tablero[*i_inicial][*j_inicial])=='C') {//caballo negras 8 posibles posiciones
             
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial+2])) {//(-1,+2)
@@ -211,7 +211,7 @@ int caballos (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
     }
 }
 
-int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]){
+int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]) {
     int comprobar_diagonales=0,i,j;
     
     if ((tablero[*i_inicial][*j_inicial])=='A') { //alfil negras
@@ -317,7 +317,7 @@ int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char ta
     }
 }
 
-int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]){
+int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]) {
     
     int i,comprobar_ejes=0;
     
@@ -409,7 +409,7 @@ int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
     }
 }
 
-int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]){
+int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]) {
     
     if ((tablero[*i_inicial][*j_inicial])=='R') { //rey negras
         
@@ -546,7 +546,7 @@ int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
     }
 }
 
-int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]){
+int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]) {
     
     
     if ((tablero[*i_inicial][*j_inicial])=='D') { //dama negras
