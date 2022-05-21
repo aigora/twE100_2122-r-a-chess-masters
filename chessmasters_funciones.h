@@ -48,6 +48,7 @@ void imprimir_tablero(char tablero[8][8]){
 }
 
 int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]){
+    int comprobar_diagonales=1,i,j;
     
     if ((tablero[*i_inicial][*j_inicial])=='P') { //peon negras 4 movimientos posibles
         
@@ -266,7 +267,16 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
     
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial+1])) {//(+1,+1)
             if ((*i_final<8)&&(*j_final<8)) {
-                return 0;
+                for (i=*i_inicial+1; i<=(*i_final); i++) {
+                    for (j=*j_inicial+1; i<=(*j_final); j++) {
+                        if ((tablero[i][j])!='.') {
+                            comprobar_diagonales=1;
+                        }
+                    }
+                }
+                if (comprobar_diagonales==0) {
+                    return 0;
+                }
             }else{
                 return 1;
             }
@@ -274,7 +284,13 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial+1])) {//(-1,+1)
             if ((*i_final>=0)&&(*j_final<8)) {
-                return 0;
+                for (i=*i_inicial-1; i>=(*i_final); i--) {
+                    for (j=*j_inicial+1; i<=(*j_final); j++) {
+                        if ((tablero[i][j])!='.') {
+                            comprobar_diagonales=1;
+                        }
+                    }
+                }
             }else{
                 return 1;
             }
@@ -282,7 +298,13 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial-1])) {//(-1,-1)
             if ((*i_final>=0)&&(*j_final>=0)) {
-                return 0;
+                for (i=*i_inicial-1; i>=(*i_final); i--) {
+                    for (j=*j_inicial-1; i>=(*j_final); j--) {
+                        if ((tablero[i][j])!='.') {
+                            comprobar_diagonales=1;
+                        }
+                    }
+                }
             }else{
                 return 1;
             }
@@ -290,7 +312,13 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial-1])) {//(+1,-1)
             if ((*i_final<8)&&(*j_final>=0)) {
-                return 0;
+                for (i=*i_inicial+1; i<=(*i_final); i++) {
+                    for (j=*j_inicial-1; i>=(*j_final); j--) {
+                        if ((tablero[i][j])!='.') {
+                            comprobar_diagonales=1;
+                        }
+                    }
+                }
             }else{
                 return 1;
             }
@@ -298,7 +326,13 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+2][*j_inicial+2])) {//(+2,+2)
             if ((*i_final<8)&&(*j_final<8)) {
-                return 0;
+                for (i=*i_inicial+1; i<=(*i_final); i++) {
+                    for (j=*j_inicial+1; i<=(*j_final); j++) {
+                        if ((tablero[i][j])!='.') {
+                            comprobar_diagonales=1;
+                        }
+                    }
+                }
             }else{
                 return 1;
             }
