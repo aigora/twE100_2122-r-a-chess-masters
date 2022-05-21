@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "chessmasters_funciones.h"
+#include "chessmasters_piezas.h"
 
 int main(){
     char tablero[8][8];
