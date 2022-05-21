@@ -124,7 +124,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
     if ((tablero[*i_inicial][*j_inicial])=='C') {//caballo negras 8 posibles posiciones
             
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial+2])) {//(-1,+2)
-            if ((*i_final>=0)&&(*j_final>=0)) {
+            if ((*i_final>=0)&&(*j_final>=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -132,7 +132,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
         
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial+2])) {//(+1,+2)
-            if ((*i_final>=0)&&(*j_final<8)) {
+            if ((*i_final>=0)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -140,7 +140,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
         
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-2][*j_inicial+1])) {//(-2,+1)
-            if ((*i_final>=0)&&(*j_final>=0)) {
+            if ((*i_final>=0)&&(*j_final>=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -148,7 +148,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
         
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-2][*j_inicial-1])) {//(-2,-1)
-            if ((*i_final<8)&&(*j_final>=0)) {
+            if ((*i_final<8)&&(*j_final>=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -156,7 +156,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
         
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+2][*j_inicial+1])) {//(+2,+1)
-            if ((*i_final>=0)&&(*j_final<8)) {
+            if ((*i_final>=0)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -164,7 +164,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
         
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+2][*j_inicial-1])) {//(+2,-1)
-            if ((*i_final<8)&&(*j_final>=0)) {
+            if ((*i_final<8)&&(*j_final>=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -172,7 +172,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
         
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial-2])) {//(-1,-2)
-            if ((*i_final<8)&&(*j_final<8)) {
+            if ((*i_final<8)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -180,7 +180,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
         
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial-2])) {//(+1,-2)
-            if ((*i_final<8)&&(*j_final<8)) {
+            if ((*i_final<8)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -193,7 +193,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
     if ((tablero[*i_inicial][*j_inicial])=='c') {//caballo blancas
         
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial+2])) {//(-1,+2)
-            if ((*i_final>=0)&&(*j_final>=0)) {
+            if ((*i_final>=0)&&(*j_final>=0)&&((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')) {
                 return 0;
             }else{
                 return 1;
@@ -266,7 +266,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
     if ((tablero[*i_inicial][*j_inicial])=='A') { //alfil negras
     
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial+1])) {//(+1,+1)
-            if ((*i_final<8)&&(*j_final<8)) {
+            if ((*i_final<8)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 for (i=*i_inicial+1; i<=(*i_final); i++) {
                     for (j=*j_inicial+1; i<=(*j_final); j++) {
                         if ((tablero[i][j])!='.') {
@@ -283,7 +283,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
         
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial+1])) {//(-1,+1)
-            if ((*i_final>=0)&&(*j_final<8)) {
+            if ((*i_final>=0)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 for (i=*i_inicial-1; i>=(*i_final); i--) {
                     for (j=*j_inicial+1; i<=(*j_final); j++) {
                         if ((tablero[i][j])!='.') {
@@ -297,7 +297,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial-1])) {//(-1,-1)
-            if ((*i_final>=0)&&(*j_final>=0)) {
+            if ((*i_final>=0)&&(*j_final>=0)&&((tablero[*i_final][*j_final])>='a')) {
                 for (i=*i_inicial-1; i>=(*i_final); i--) {
                     for (j=*j_inicial-1; i>=(*j_final); j--) {
                         if ((tablero[i][j])!='.') {
@@ -311,7 +311,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial-1])) {//(+1,-1)
-            if ((*i_final<8)&&(*j_final>=0)) {
+            if ((*i_final<8)&&(*j_final>=0)&&((tablero[*i_final][*j_final])>='a')) {
                 for (i=*i_inicial+1; i<=(*i_final); i++) {
                     for (j=*j_inicial-1; i>=(*j_final); j--) {
                         if ((tablero[i][j])!='.') {
@@ -325,7 +325,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+2][*j_inicial+2])) {//(+2,+2)
-            if ((*i_final<8)&&(*j_final<8)) {
+            if ((*i_final<8)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 for (i=*i_inicial+1; i<=(*i_final); i++) {
                     for (j=*j_inicial+1; i<=(*j_final); j++) {
                         if ((tablero[i][j])!='.') {
@@ -339,7 +339,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-2][*j_inicial-2])) {//(-2,-2)
-            if ((*i_final>=0)&&(*j_final>=0)) {
+            if ((*i_final>=0)&&(*j_final>=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -347,7 +347,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-2][*j_inicial+2])) {//(-2,+2)
-            if ((*i_final>=0)&&(*j_final<8)) {
+            if ((*i_final>=0)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -355,7 +355,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+2][*j_inicial-2])) {//(+2,-2)
-            if ((*i_final<8)&&(*j_final<=0)) {
+            if ((*i_final<8)&&(*j_final<=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -363,7 +363,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+3][*j_inicial+3])) {//(+3,+3)
-            if ((*i_final<8)&&(*j_final<8)) {
+            if ((*i_final<8)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -371,7 +371,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-3][*j_inicial-3])) {//(-3,-3)
-            if ((*i_final>=0)&&(*j_final>=0)) {
+            if ((*i_final>=0)&&(*j_final>=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -379,7 +379,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-3][*j_inicial+3])) {//(-3,+3)
-            if ((*i_final>=0)&&(*j_final<8)) {
+            if ((*i_final>=0)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -387,7 +387,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+3][*j_inicial-3])) {//(+3,-3)
-            if ((*i_final<8)&&(*j_final<=0)) {
+            if ((*i_final<8)&&(*j_final<=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -395,7 +395,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+4][*j_inicial+4])) {//(+4,+4)
-            if ((*i_final<8)&&(*j_final<8)) {
+            if ((*i_final<8)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -403,7 +403,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-4][*j_inicial-4])) {//(-4,-4)
-            if ((*i_final>=0)&&(*j_final>=0)) {
+            if ((*i_final>=0)&&(*j_final>=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -411,7 +411,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-4][*j_inicial+4])) {//(-4,+4)
-            if ((*i_final>=0)&&(*j_final<8)) {
+            if ((*i_final>=0)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -419,7 +419,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+4][*j_inicial-4])) {//(+4,-4)
-            if ((*i_final<8)&&(*j_final<=0)) {
+            if ((*i_final<8)&&(*j_final<=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -427,7 +427,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+5][*j_inicial+5])) {//(+5,+5)
-            if ((*i_final<8)&&(*j_final<8)) {
+            if ((*i_final<8)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -435,7 +435,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-5][*j_inicial-5])) {//(-5,-5)
-            if ((*i_final>=0)&&(*j_final>=0)) {
+            if ((*i_final>=0)&&(*j_final>=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -443,7 +443,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-5][*j_inicial+5])) {//(-5,+5)
-            if ((*i_final>=0)&&(*j_final<8)) {
+            if ((*i_final>=0)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -451,7 +451,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+5][*j_inicial-5])) {//(+5,-5)
-            if ((*i_final<8)&&(*j_final<=0)) {
+            if ((*i_final<8)&&(*j_final<=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -459,7 +459,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+6][*j_inicial+6])) {//(+6,+6)
-            if ((*i_final<8)&&(*j_final<8)) {
+            if ((*i_final<8)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -467,7 +467,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-6][*j_inicial-6])) {//(-6,-6)
-            if ((*i_final>=0)&&(*j_final>=0)) {
+            if ((*i_final>=0)&&(*j_final>=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -475,7 +475,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-6][*j_inicial+6])) {//(-6,+6)
-            if ((*i_final>=0)&&(*j_final<8)) {
+            if ((*i_final>=0)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -483,7 +483,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+6][*j_inicial-6])) {//(+6,-6)
-            if ((*i_final<8)&&(*j_final<=0)) {
+            if ((*i_final<8)&&(*j_final<=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -491,7 +491,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+7][*j_inicial+7])) {//(+7,+7)
-            if ((*i_final<8)&&(*j_final<8)) {
+            if ((*i_final<8)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -499,7 +499,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-7][*j_inicial-7])) {//(-7,-7)
-            if ((*i_final>=0)&&(*j_final>=0)) {
+            if ((*i_final>=0)&&(*j_final>=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -507,7 +507,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-7][*j_inicial+7])) {//(-7,+7)
-            if ((*i_final>=0)&&(*j_final<8)) {
+            if ((*i_final>=0)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -515,7 +515,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+7][*j_inicial-7])) {//(+7,-7)
-            if ((*i_final<8)&&(*j_final<=0)) {
+            if ((*i_final<8)&&(*j_final<=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -753,7 +753,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
     if ((tablero[*i_inicial][*j_inicial])=='R') { //rey negras
         
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial+1])) {//(+1,+1)
-            if ((*i_final<8)&&(*j_final<8)) {
+            if ((*i_final<8)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -761,7 +761,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
         
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial+1])) {//(-1,+1)
-            if ((*i_final>=0)&&(*j_final<8)) {
+            if ((*i_final>=0)&&(*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -769,7 +769,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial-1])) {//(-1,-1)
-            if ((*i_final>=0)&&(*j_final>=0)) {
+            if ((*i_final>=0)&&(*j_final>=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -777,7 +777,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial-1])) {//(+1,-1)
-            if ((*i_final<8)&&(*j_final>=0)) {
+            if ((*i_final<8)&&(*j_final>=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -785,7 +785,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial])) {//(+1,0)
-            if ((*i_final<8)) {
+            if ((*i_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -793,7 +793,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial])) {//(-1,0)
-            if ((*i_final>=0)) {
+            if ((*i_final>=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -801,7 +801,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial][*j_inicial+1])) {//(0,+1)
-            if ((*j_final<8)) {
+            if ((*j_final<8)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
@@ -809,7 +809,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
 
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial][*j_inicial-1])) {//(0,-1)
-            if ((*j_final>=0)) {
+            if ((*j_final>=0)&&((tablero[*i_final][*j_final])>='a')) {
                 return 0;
             }else{
                 return 1;
