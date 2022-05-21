@@ -69,7 +69,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
         
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial+1])) {
-            if ((*j_final<8)&&((tablero[*i_final][*j_final])!='.')&&(0<=(*i_final))) {
+            if ((*j_final<8)&&((tablero[*i_final][*j_final])>='a')&&(0<=(*i_final))) {
                 return 0;
             }else{
                 return 1;
@@ -77,7 +77,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
         
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial+1])) {
-            if ((*j_final<8)&&((tablero[*i_final][*j_final])!='.')&&(*i_final<8)) {
+            if ((*j_final<8)&&((tablero[*i_final][*j_final])>='a')&&(*i_final<8)) {
                 return 0;
             }else{
                 return 1;
@@ -105,7 +105,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
         
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial-1])) {
-            if ((*j_final>=0)&&((tablero[*i_final][*j_final])!='.')&&(0<=(*i_final))) {
+            if ((*j_final>=0)&&((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')&&(0<=(*i_final))) {//limites y contiene mayuscula
                 return 0;
             }else{
                 return 1;
@@ -113,7 +113,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
         
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial-1])) {
-            if ((*j_final>=0)&&((tablero[*i_final][*j_final])!='.')&&(*i_final<8)) {
+            if ((*j_final>=0)&&((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')&&(*i_final<8)) { // limites y contiene mayuscula
                 return 0;
             }else{
                 return 1;
