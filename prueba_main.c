@@ -5,7 +5,7 @@
 
 void mover_pieza(int i_inicial, int j_inicial, int i_final,   int j_final, char tablero[8][8]);
 
-int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final,   int *j_final, int *contador_movimientos);
+int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final,   int *j_final, int *contador_movimientos, char tablero[8][8]);
 
 
 void tablero_inicial(char tablero[8][8]);
@@ -31,7 +31,7 @@ int main() {
     tablero_inicial(tablero);
     imprimir_tablero(tablero);
     do{
-        retorno_introduce_coordenadas = introduce_coordenadas(&i_0,&j_0,&i_1,&j_1,&contador);
+        retorno_introduce_coordenadas = introduce_coordenadas(&i_0,&j_0,&i_1,&j_1,&contador,tablero);
         printf("\nretorno_introduce_coordenadas=%d\n",retorno_introduce_coordenadas);
 
         if ((retorno_introduce_coordenadas)==0) {
@@ -65,15 +65,18 @@ void mover_pieza(int i_inicial, int j_inicial, int i_final,   int j_final, char 
     imprimir_tablero(tablero);
 }
 
-int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_final, int *contador_movimientos) {
-    int numero_inicial=0,numero_final=0;
+int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_final, int *contador_movimientos, char tablero[8][8]) {
+    int numero_inicial=0,numero_final=0,turno_color=0;
     char letra_inicial=0,letra_final=0;
     
     if ((*contador_movimientos%2)!=0) {
         printf("\n\tTurno de piezas NEGRAS\n");
+        turno_color=1;
+
     }
     else{
         printf("\n\tTurno de piezas BLANCAS\n");
+        turno_color=0;
     }
     printf("\nIntroduzca coordenadas de la pieza a mover (letra y numero):");
     scanf(" %c",&letra_inicial);
@@ -144,6 +147,15 @@ int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_f
             return 1;
             break;
     }
+    
+    if ((turno_color==0)&&(((tablero[*i_inicial][*j_inicial])>='A')&&((tablero[*i_inicial][*j_inicial])<='T')))//turno_color=0 turno blancas
+    {
+        return 1;
+    }else if ((turno_color==1)&&((tablero[*i_inicial][*j_inicial])>='A'))
+    {
+        return 1;
+    }
+    
     
     printf("\nprueba:Coordenadas introducidas %d%d \n",*i_inicial,*j_inicial);//test
     printf("\nIntroduzca las coordenadas donde quiere mover la pieza:");
