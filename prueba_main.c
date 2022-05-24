@@ -84,28 +84,28 @@ int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_f
     printf("\nprueba:Coordenadas introducidas %c%d \n",letra_inicial,numero_inicial);//test
     switch (letra_inicial) {
         case 'a':     //a
-            *i_inicial=0;
+            *j_inicial=0;
             break;
         case 'b':     //b
-            *i_inicial=1;
+            *j_inicial=1;
             break;
         case 'c':     //c
             *i_inicial=2;
             break;
         case 'd':    //d
-            *i_inicial=3;
+            *j_inicial=3;
             break;
         case 'e':    //e
-            *i_inicial=4;
+            *j_inicial=4;
             break;
         case 'f':    //f
-            *i_inicial=5;
+            *j_inicial=5;
             break;
         case 'g':    //g
-            *i_inicial=6;
+            *j_inicial=6;
             break;
         case 'h':    //h
-            *i_inicial=7;
+            *j_inicial=7;
             break;
         
             
@@ -115,28 +115,28 @@ int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_f
     }
     switch (numero_inicial) {
         case 8:     //0
-            *j_inicial=0;
+            *i_inicial=0;
             break;
         case 7:     //1
-            *j_inicial=1;
+            *i_inicial=1;
             break;
         case 6:     //2
-            *j_inicial=2;
+            *i_inicial=2;
             break;
         case 5:     //3
-            *j_inicial=3;
+            *i_inicial=3;
             break;
         case 4:     //4
-            *j_inicial=4;
+            *i_inicial=4;
             break;
         case 3:     //5
-            *j_inicial=5;
+            *i_inicial=5;
             break;
         case 2:     //6
-            *j_inicial=6;
+            *i_inicial=6;
             break;
         case 1:     //7
-            *j_inicial=7;
+            *i_inicial=7;
             break;
         
         default:
@@ -151,28 +151,28 @@ int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_f
     
     switch (letra_final) {
         case 'a':     //a-0
-            *i_final=0;
+            *j_final=0;
             break;
         case 'b':     //b-1
-            *i_final=1;
+            *j_final=1;
             break;
         case 'c':     //c-2
-            *i_final=2;
+            *j_final=2;
             break;
         case 'd':    //d-3
-            *i_final=3;
+            *j_final=3;
             break;
         case 'e':    //e-4
-            *i_final=4;
+            *j_final=4;
             break;
         case 'f':    //f-5
-            *i_final=5;
+            *j_final=5;
             break;
         case 'g':    //g-6
-            *i_final=6;
+            *j_final=6;
             break;
         case 'h':    //h-7
-            *i_final=7;
+            *j_final=7;
             break;
             
         default:
@@ -181,28 +181,28 @@ int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_f
     }
     switch (numero_final) {
         case 8:    //0
-            *j_final=0;
+            *i_final=0;
             break;
         case 7:    //1
-            *j_final=1;
+            *i_final=1;
             break;
         case 6:    //2
-            *j_final=2;
+            *i_final=2;
             break;
         case 5:    //3
-            *j_final=3;
+            *i_final=3;
             break;
         case 4:    //4
-            *j_final=4;
+            *i_final=4;
             break;
         case 3:    //5
-            *j_final=5;
+            *i_final=5;
             break;
         case 2:    //6
-            *j_final=6;
+            *i_final=6;
             break;
         case 1:    //7
-            *j_final=7;
+            *i_final=7;
             break;
         
         default:
