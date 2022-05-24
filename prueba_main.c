@@ -742,28 +742,28 @@ int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
     if ((tablero[*i_inicial][*j_inicial])=='T') { //torre negras
         if ((tablero[*i_final][*j_final]>='a')||(tablero[*i_final][*j_final]=='.')) {
             
-            if ((*i_final)>(*i_inicial)) {
+            if (((*i_final)>(*i_inicial))&&((*j_final)==(*j_inicial))) {
                 for (i=(*i_inicial+1); i<(*i_final); i++) {
                     if ((tablero[i][*j_inicial])!='.') {
                         comprobar_ejes=1;
                     }
                 }
                 return comprobar_ejes;
-            }else if ((*i_final)<(*i_inicial)) {
+            }else if (((*i_final)<(*i_inicial))&&((*j_final)==(*j_inicial))) {
                 for (i=(*i_inicial-1); i>(*i_final); i--) {
                     if ((tablero[i][*j_inicial])!='.') {
                         comprobar_ejes=1;
                     }
                 }
                 return comprobar_ejes;
-            }else if ((*j_final)>(*j_inicial)) {
+            }else if (((*j_final)>(*j_inicial))&&((*i_final)==(*i_inicial))) {
                 for (i=(*j_inicial+1); i<(*j_final); i++) {
                     if ((tablero[*i_inicial][i])!='.') {
                         comprobar_ejes=1;
                     }
                 }
                 return comprobar_ejes;
-            }else if ((*j_final)<(*j_inicial)) {
+            }else if (((*j_final)<(*j_inicial))&&((*i_final)==(*i_inicial))) {
                 for (i=(*j_inicial-1); i>(*j_final); i--) {
                     if ((tablero[*i_inicial][i])!='.') {
                         comprobar_ejes=1;
@@ -782,7 +782,7 @@ int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
     if ((tablero[*i_inicial][*j_inicial])=='t') { //torre blancas
         if (((tablero[*i_final][*j_final]>='A')&&(tablero[*i_final][*j_final]<='T'))||(tablero[*i_final][*j_final]=='.')) {
             
-            if ((*i_final)>(*i_inicial)) {
+            if (((*i_final)>(*i_inicial))&&((*j_final)==(*j_inicial))) {
                 for (i=(*i_inicial+1); i<(*i_final); i++) {
                     if ((tablero[i][*j_inicial])!='.') {
                         comprobar_ejes=1;
@@ -791,7 +791,7 @@ int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
                 return comprobar_ejes;
             }
             
-            if ((*i_final)<(*i_inicial)) {
+            if (((*i_final)<(*i_inicial))&&((*j_final)==(*j_inicial))) {
                 for (i=(*i_inicial-1); i>(*i_final); i--) {
                     if ((tablero[i][*j_inicial])!='.') {
                         comprobar_ejes=1;
@@ -800,7 +800,7 @@ int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
                 return comprobar_ejes;
             }
             
-            if ((*j_final)>(*j_inicial)) {
+            if (((*j_final)>(*j_inicial))&&((*i_final)==(*i_inicial))) {
                 for (i=(*j_inicial+1); i<(*j_final); i++) {
                     if ((tablero[*i_inicial][i])!='.') {
                         comprobar_ejes=1;
@@ -809,7 +809,7 @@ int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
                 return comprobar_ejes;
             }
             
-            if ((*j_final)<(*j_inicial)) {
+            if (((*j_final)<(*j_inicial))&&((*i_final)==(*i_inicial))) {
                 for (i=(*j_inicial-1); i>(*j_final); i--) {
                     if ((tablero[*i_inicial][i])!='.') {
                         comprobar_ejes=1;
