@@ -642,9 +642,9 @@ int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char ta
     if ((tablero[*i_inicial][*j_inicial])=='A') { //alfil negras
         if ((tablero[*i_final][*j_final]>='a')||(tablero[*i_final][*j_final]=='.')) {
             
-            if (((*i_final)>(*i_inicial))&&((*j_final)>(*j_inicial))) {
-                for (i=*i_inicial+1; i<(*i_final); i++) {
-                    for (j=*j_inicial+1; i<(*j_final); j++) {
+            if (((*j_final)>(*j_inicial))&&((*i_final)>(*i_inicial))) {
+                for (j=*j_inicial+1; j<(*j_final); j++) {
+                    for (i=*i_inicial+1; j<(*i_final); i++) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
@@ -653,9 +653,9 @@ int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char ta
                 return comprobar_diagonales;
             }
             
-            if (((*i_final)>(*i_inicial))&&((*j_final)<(*j_inicial))) {
-                for (i=*i_inicial+1; i<(*i_final); i++) {
-                    for (j=*j_inicial-1; i>(*j_final); j--) {
+            if (((*j_final)>(*j_inicial))&&((*i_final)<(*i_inicial))) {
+                for (j=*i_inicial+1; j<(*j_final); j++) {
+                    for (i=*i_inicial-1; j>(*j_final); i--) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
@@ -664,9 +664,9 @@ int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char ta
                 return comprobar_diagonales;
             }
             
-            if (((*i_final)<(*i_inicial))&&((*j_final)<(*j_inicial))) {
-                for (i=*i_inicial-1; i>(*i_final); i--) {
-                    for (j=*j_inicial-1; i>(*j_final); j--) {
+            if (((*j_final)<(*j_inicial))&&((*i_final)<(*i_inicial))) {
+                for (j=*j_inicial-1; j>(*j_final); j--) {
+                    for (i=*i_inicial-1; j>(*i_final); i--) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
@@ -675,9 +675,9 @@ int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char ta
                 return comprobar_diagonales;
             }
             
-            if (((*i_final)<(*i_inicial))&&((*j_final)>(*j_inicial))) {
-                for (i=*i_inicial-1; i>(*i_final); i--) {
-                    for (j=*j_inicial+1; i<(*j_final); j++) {
+            if (((*j_final)<(*j_inicial))&&((*i_final)>(*i_inicial))) {
+                for (j=*j_inicial-1; j>(*j_final); j--) {
+                    for (i=*i_inicial+1; j<(*i_final); i++) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
@@ -693,9 +693,9 @@ int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char ta
     if ((tablero[*i_inicial][*j_inicial])=='a') { //alfil blancas
         if (((tablero[*i_final][*j_final]>='A')&&(tablero[*i_final][*j_final]<='T'))||(tablero[*i_final][*j_final]=='.')) {
             
-            if (((*i_final)>(*i_inicial))&&((*j_final)>(*j_inicial))) {
-                for (i=*i_inicial+1; i<(*i_final); i++) {
-                    for (j=*j_inicial+1; i<(*j_final); j++) {
+            if (((*j_final)>(*j_inicial))&&((*i_final)>(*i_inicial))) {
+                for (j=*j_inicial+1; j<(*j_final); j++) {
+                    for (i=*i_inicial+1; j<(*i_final); i++) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
@@ -704,9 +704,9 @@ int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char ta
                 return comprobar_diagonales;
             }
             
-            if (((*i_final)>(*i_inicial))&&((*j_final)<(*j_inicial))) {
-                for (i=*i_inicial+1; i<(*i_final); i++) {
-                    for (j=*j_inicial-1; i>(*j_final); j--) {
+            if (((*j_final)>(*j_inicial))&&((*i_final)<(*i_inicial))) {
+                for (j=*j_inicial+1; j<(*j_final); j++) {
+                    for (i=*i_inicial-1; j>(*i_final); i--) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
@@ -715,9 +715,9 @@ int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char ta
                 return comprobar_diagonales;
             }
             
-            if (((*i_final)<(*i_inicial))&&((*j_final)<(*j_inicial))) {
-                for (i=*i_inicial-1; i>(*i_final); i--) {
-                    for (j=*j_inicial-1; i>(*j_final); j--) {
+            if (((*j_final)<(*j_inicial))&&((*i_final)<(*i_inicial))) {
+                for (j=*j_inicial-1; j>(*j_final); j--) {
+                    for (i=*i_inicial-1; j>(*i_final); i--) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
@@ -726,9 +726,9 @@ int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char ta
                 return comprobar_diagonales;
             }
             
-            if (((*i_final)<(*i_inicial))&&((*j_final)>(*j_inicial))) {
-                for (i=*i_inicial-1; i>(*i_final); i--) {
-                    for (j=*j_inicial+1; i<(*j_final); j++) {
+            if (((*j_final)<(*j_inicial))&&((*i_final)>(*i_inicial))) {
+                for (j=*j_inicial-1; j>(*i_final); j--) {
+                    for (i=*i_inicial+1; j<(*i_final); i++) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
