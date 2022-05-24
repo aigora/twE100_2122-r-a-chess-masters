@@ -47,7 +47,7 @@ int main() {
             }
         }else{
             printf("\nIntroduzca un movimiento valido");
-            contador=contador-1;
+           
         }
         
 
@@ -76,7 +76,7 @@ int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_f
     }
     printf("\nIntroduzca coordenadas de la pieza a mover (letra y numero):");
     scanf("%c",&letra_inicial);
-    scanf("%d",&numero_inicial);
+    scanf("%d ",&numero_inicial);
 
 
 
