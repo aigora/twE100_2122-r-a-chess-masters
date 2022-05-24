@@ -91,7 +91,7 @@ int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_f
             *j_inicial=1;
             break;
         case 'c':     //c
-            *i_inicial=2;
+            *j_inicial=2;
             break;
         case 'd':    //d
             *j_inicial=3;
