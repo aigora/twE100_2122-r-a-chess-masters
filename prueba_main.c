@@ -275,12 +275,12 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
     
     int i,j;//para test imprimir matriz
     
-    printf("\ni_inicial=%d\nj_inicial=%d\ni_final=%d\nj_final=%d\n",i_0,j_0,i_1,i_1);
+    printf("\ni_inicial=%d\nj_inicial=%d\ni_final=%d\nj_final=%d\n",i_0,j_0,i_1,j_1);
     printf("\ni_inicial=%d\nj_inicial=%d\ni_final=%d\nj_final=%d\n",*i_inicial,*j_inicial,*i_final,*j_final);
     printf("\npieza inicial=%c\n",tablero[i_0][j_0]);
     
     for(i=0;i<8;i++){
-        printf("\n");
+        printf("\t\n");
         for(j=0;j<8;j++){
             printf(" %c",tablero[i][j]);
         }
