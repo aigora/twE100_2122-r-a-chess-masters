@@ -1063,36 +1063,28 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                     }
                 }
                 return comprobar_ejes;
-            }
-            
-            if (((*i_final)<(*i_inicial))&&((*j_final)==(*j_inicial))) {
+            }else if (((*i_final)<(*i_inicial))&&((*j_final)==(*j_inicial))) {
                 for (i=(*i_inicial-1); i>(*i_final); i--) {
                     if ((tablero[i][*j_inicial])!='.') {
                         comprobar_ejes=1;
                     }
                 }
                 return comprobar_ejes;
-            }
-            
-            if (((*j_final)>(*j_inicial))&&((*i_final)==(*i_inicial))) {
+            }else if (((*j_final)>(*j_inicial))&&((*i_final)==(*i_inicial))) {
                 for (i=(*j_inicial+1); i<(*j_final); i++) {
                     if ((tablero[*i_inicial][i])!='.') {
                         comprobar_ejes=1;
                     }
                 }
                 return comprobar_ejes;
-            }
-            
-            if (((*j_final)<(*j_inicial))&&((*i_final)==(*i_inicial))) {
+            }else if (((*j_final)<(*j_inicial))&&((*i_final)==(*i_inicial))) {
                 for (i=(*j_inicial-1); i>(*j_final); i--) {
                     if ((tablero[*i_inicial][i])!='.') {
                         comprobar_ejes=1;
                     }
                 }
                 return comprobar_ejes;
-            }
-            
-            if (((*i_final)>(*i_inicial))&&((*j_final)>(*j_inicial))) { //movimientos como alfil
+            }else if (((*i_final)>(*i_inicial))&&((*j_final)>(*j_inicial))) { //movimientos como alfil
                 for (j=*j_inicial+1; j<(*j_final); j++) {
                     for (i=*i_inicial+1; j<(*i_final); i++) {
                         if ((tablero[i][j])!='.') {
@@ -1101,9 +1093,7 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                     }
                 }
                 return comprobar_diagonales;
-            }
-            
-            if (((*i_final)>(*i_inicial))&&((*j_final)<(*j_inicial))) {
+            }else if (((*i_final)>(*i_inicial))&&((*j_final)<(*j_inicial))) {
                 for (j=*j_inicial+1; j<(*j_final); j++) {
                     for (i=*i_inicial-1; j>(*i_final); i--) {
                         if ((tablero[i][j])!='.') {
@@ -1112,9 +1102,7 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                     }
                 }
                 return comprobar_diagonales;
-            }
-            
-            if (((*i_final)<(*i_inicial))&&((*j_final)<(*j_inicial))) {
+            }else if (((*i_final)<(*i_inicial))&&((*j_final)<(*j_inicial))) {
                 for (j=*j_inicial-1; j>(*j_final); j--) {
                     for (i=*i_inicial-1; j>(*i_final); i--) {
                         if ((tablero[i][j])!='.') {
@@ -1123,9 +1111,7 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                     }
                 }
                 return comprobar_diagonales;
-            }
-            
-            if (((*i_final)<(*i_inicial))&&((*j_final)>(*j_inicial))) {
+            }else if (((*i_final)<(*i_inicial))&&((*j_final)>(*j_inicial))) {
                 for (j=*j_inicial-1; j>(*j_final); j--) {
                     for (i=*i_inicial+1; j<(*i_final); i++) {
                         if ((tablero[i][j])!='.') {
@@ -1134,6 +1120,8 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                     }
                 }
                 return comprobar_diagonales;
+            }else{
+                return 1;
             }
             
         }else{
