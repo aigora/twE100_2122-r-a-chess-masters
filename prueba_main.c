@@ -324,30 +324,26 @@ int peones (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
             }else{
                 return 1;
             }
-        }
-        
-        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+2][*j_inicial])) { //avanza 2
+        }else if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+2][*j_inicial])) { //avanza 2
             if ((*i_inicial==1)&&((tablero[*i_final][*j_final])=='.')) {
                 return 0;
             }else{
                 return 1;
             }
-        }
-        
-        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial-1])) { //come hacia su derecha
+        }else if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial-1])) { //come hacia su derecha
             if ((*i_final<8)&&((tablero[*i_final][*j_final])>='a')&&(0<=(*j_final))) {
                 return 0;
             }else{
                 return 1;
             }
-        }
-        
-        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial+1])) { //come hacia su izquierda
+        }else if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial+1])) { //come hacia su izquierda
             if ((*i_final<8)&&((tablero[*i_final][*j_final])>='a')&&(*j_final<8)) { //limites tablero y pieza minuscula
                 return 0;
             }else{
                 return 1;
             }
+        }else{
+            return 1;
         }
     }
     
@@ -360,30 +356,26 @@ int peones (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
             }else{
                 return 1;
             }
-        }
-        
-        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-2][*j_inicial])) {
+        }else if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-2][*j_inicial])) {
             if ((*i_inicial==6)&&((tablero[*i_final][*j_final])=='.')) {
                 return 0;
             }else{
                 return 1;
             }
-        }
-        
-        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial-1])) {
+        }else if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial-1])) {
             if ((*i_final>=0)&&((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')&&(0<=(*j_final))) {//limites y contiene mayuscula
                 return 0;
             }else{
                 return 1;
             }
-        }
-        
-        if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial+1])) {
+        }else if ((tablero[*i_final][*j_final])==(tablero[*i_inicial-1][*j_inicial+1])) {
             if ((*i_final>=0)&&((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')&&(*j_final<8)) { // limites y contiene mayuscula
                 return 0;
             }else{
                 return 1;
             }
+        }else{
+            return 1;
         }
     }
     return 1;
