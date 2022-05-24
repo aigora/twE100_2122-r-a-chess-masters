@@ -987,7 +987,7 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                 return comprobar_ejes;
             }
             
-            if (((*j_final)>(*j_inicial))&&((*j_final)==(*j_inicial))) {
+            if (((*j_final)>(*j_inicial))&&((*i_final)==(*i_inicial))) {
                 for (i=(*j_inicial+1); i<(*j_final); i++) {
                     if ((tablero[*i_inicial][i])!='.') {
                         comprobar_ejes=1;
@@ -996,7 +996,7 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                 return comprobar_ejes;
             }
             
-            if (((*j_final)<(*j_inicial))&&((*j_final)==(*j_inicial))) {
+            if (((*j_final)<(*j_inicial))&&((*i_final)==(*i_inicial))) {
                 for (i=(*j_inicial-1); i>(*j_final); i--) {
                     if ((tablero[*i_inicial][i])!='.') {
                         comprobar_ejes=1;
@@ -1074,7 +1074,7 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                 return comprobar_ejes;
             }
             
-            if (((*j_final)>(*j_inicial))&&((*j_final)==(*j_inicial))) {
+            if (((*j_final)>(*j_inicial))&&((*i_final)==(*i_inicial))) {
                 for (i=(*j_inicial+1); i<(*j_final); i++) {
                     if ((tablero[*i_inicial][i])!='.') {
                         comprobar_ejes=1;
@@ -1083,7 +1083,7 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                 return comprobar_ejes;
             }
             
-            if (((*j_final)<(*j_inicial))&&((*j_final)==(*j_inicial))) {
+            if (((*j_final)<(*j_inicial))&&((*i_final)==(*i_inicial))) {
                 for (i=(*j_inicial-1); i>(*j_final); i--) {
                     if ((tablero[*i_inicial][i])!='.') {
                         comprobar_ejes=1;
