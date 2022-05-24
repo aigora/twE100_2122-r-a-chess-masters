@@ -410,22 +410,37 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
     
     if (((tablero[*i_inicial][*j_inicial])=='P')||((tablero[*i_inicial][*j_inicial])=='p')) {
         retorno_peones=peones(&i_0,&j_0,&i_1,&j_1,tablero);
-        printf("retorno_peones=%d",retorno_peones);
+        printf("\nretorno_peones=%d",retorno_peones);
         return retorno_peones;
 
     }else if (((tablero[*i_inicial][*j_inicial])=='C')||((tablero[*i_inicial][*j_inicial])=='c')) {
+        retorno_caballos=caballos(&i_0,&j_0,&i_1,&j_1,tablero);
+        printf("\nretorno_caballos=%d",retorno_caballos);
+
         return caballos(&i_0,&j_0,&i_1,&j_1,tablero);
 
     }else if (((tablero[*i_inicial][*j_inicial])=='A')||((tablero[*i_inicial][*j_inicial])=='a')) {
+        retorno_alfiles=alfiles(&i_0,&j_0,&i_1,&j_1,tablero);
+        printf("\nretorno_alfiles=%d",retorno_alfiles);
+
         return alfiles(&i_0,&j_0,&i_1,&j_1,tablero);
 
     }else if (((tablero[*i_inicial][*j_inicial])=='T')||((tablero[*i_inicial][*j_inicial])=='t')) {
+        retorno_torres=torres(&i_0,&j_0,&i_1,&j_1,tablero);
+        printf("\nretorno_torres=%d",retorno_torres);
+
         return torres(&i_0,&j_0,&i_1,&j_1,tablero);
 
     }else if (((tablero[*i_inicial][*j_inicial])=='R')||((tablero[*i_inicial][*j_inicial])=='r')) {
+        retorno_reyes=reyes(&i_0,&j_0,&i_1,&j_1,tablero);
+        printf("\nretorno_reyes=%d",retorno_reyes);
+
         return reyes(&i_0,&j_0,&i_1,&j_1,tablero);
 
     }else if (((tablero[*i_inicial][*j_inicial])=='D')||((tablero[*i_inicial][*j_inicial])=='d')) {
+        retorno_damas=damas(&i_0,&j_0,&i_1,&j_1,tablero);
+        printf("\nretorno_damas=%d",retorno_damas);
+
         return damas(&i_0,&j_0,&i_1,&j_1,tablero);
 
     }else{
@@ -1139,4 +1154,3 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
     }
     return 1;
 }
-
