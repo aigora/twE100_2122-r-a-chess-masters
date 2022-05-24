@@ -1006,8 +1006,8 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
             }
             
             if (((*i_final)>(*i_inicial))&&((*j_final)>(*j_inicial))) { //movimientos como alfil
-                for (i=*i_inicial+1; i<(*i_final); i++) {
-                    for (j=*j_inicial+1; i<(*j_final); j++) {
+                for (j=*j_inicial+1; j<(*j_final); j++) {
+                    for (i=*i_inicial+1; j<(*i_final); i++) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
@@ -1017,8 +1017,8 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
             }
             
             if (((*i_final)>(*i_inicial))&&((*j_final)<(*j_inicial))) {
-                for (i=*i_inicial+1; i<(*i_final); i++) {
-                    for (j=*j_inicial-1; i>(*j_final); j--) {
+                for (j=*j_inicial+1; j<(*j_final); j++) {
+                    for (i=*i_inicial-1; j>(*j_final); i--) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
@@ -1028,8 +1028,8 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
             }
             
             if (((*i_final)<(*i_inicial))&&((*j_final)<(*j_inicial))) {
-                for (i=*i_inicial-1; i>(*i_final); i--) {
-                    for (j=*j_inicial-1; i>(*j_final); j--) {
+                for (j=*j_inicial-1; j>(*j_final); j--) {
+                    for (i=*i_inicial-1; j>(*i_final); i--) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
@@ -1039,8 +1039,8 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
             }
             
             if (((*i_final)<(*i_inicial))&&((*j_final)>(*j_inicial))) {
-                for (i=*i_inicial-1; i>(*i_final); i--) {
-                    for (j=*j_inicial+1; i<(*j_final); j++) {
+                for (j=*j_inicial-1; j>(*j_final); j--) {
+                    for (i=*i_inicial+1; j<(*i_final); i++) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
@@ -1093,8 +1093,8 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
             }
             
             if (((*i_final)>(*i_inicial))&&((*j_final)>(*j_inicial))) { //movimientos como alfil
-                for (i=*i_inicial+1; i<(*i_final); i++) {
-                    for (j=*j_inicial+1; i<(*j_final); j++) {
+                for (j=*j_inicial+1; j<(*j_final); j++) {
+                    for (i=*i_inicial+1; j<(*i_final); i++) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
@@ -1104,8 +1104,8 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
             }
             
             if (((*i_final)>(*i_inicial))&&((*j_final)<(*j_inicial))) {
-                for (i=*i_inicial+1; i<(*i_final); i++) {
-                    for (j=*j_inicial-1; i>(*j_final); j--) {
+                for (j=*j_inicial+1; j<(*j_final); j++) {
+                    for (i=*i_inicial-1; j>(*i_final); i--) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
@@ -1115,8 +1115,8 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
             }
             
             if (((*i_final)<(*i_inicial))&&((*j_final)<(*j_inicial))) {
-                for (i=*i_inicial-1; i>(*i_final); i--) {
-                    for (j=*j_inicial-1; i>(*j_final); j--) {
+                for (j=*j_inicial-1; j>(*j_final); j--) {
+                    for (i=*i_inicial-1; j>(*i_final); i--) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
@@ -1126,8 +1126,8 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
             }
             
             if (((*i_final)<(*i_inicial))&&((*j_final)>(*j_inicial))) {
-                for (i=*i_inicial-1; i>(*i_final); i--) {
-                    for (j=*j_inicial+1; i<(*j_final); j++) {
+                for (j=*j_inicial-1; j>(*j_final); j--) {
+                    for (i=*i_inicial+1; j<(*i_final); i++) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
