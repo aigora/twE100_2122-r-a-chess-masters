@@ -254,6 +254,7 @@ void imprimir_tablero(char tablero[8][8]){//imprime por pantalla el tablero
         m=m+2;
         n=n+2;
         for(l=0;l<8;l++){
+            /*
             switch (tablero[k][l])
             {
             case 'P':
@@ -296,8 +297,10 @@ void imprimir_tablero(char tablero[8][8]){//imprime por pantalla el tablero
             default:
                 printf(" %c",tablero[k][l]);
                 break;
-            }
-            
+            }*/ //unicode 
+
+            printf(" %c",tablero[k][l]); //sin unicode
+
         }
         if(k==7){
             printf(" %c %c ",margen_derecho[m],margen_derecho[n]);
@@ -381,7 +384,7 @@ void coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tab
                     control_seleccion=1;
                     break;
             }
-            
+
         }else{
             control_seleccion=1; 
         }
