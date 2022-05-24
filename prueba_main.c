@@ -287,7 +287,7 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
     }
     
     if (((tablero[*i_inicial][*j_inicial])=='P')||((tablero[*i_inicial][*j_inicial])=='p')) {
-        retorno_peones=peones(&*i_inicial,&*j_inicial,&*i_final,&*j_final,tablero);
+        retorno_peones=peones(&i_0,&j_0,&i_1,&j_1,tablero);
         printf("retorno_peones=%d",retorno_peones);
         return retorno_peones;
 
