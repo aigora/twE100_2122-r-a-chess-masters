@@ -12,6 +12,7 @@ void tablero_inicial(char tablero[8][8]);
 void imprimir_tablero(char tablero[8][8]);
 int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]);
 
+void coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tablero[8][8]);
 
 int peones (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]);
 int caballos (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]);
@@ -75,8 +76,8 @@ int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_f
         printf("\n\tTurno de piezas BLANCAS\n");
     }
     printf("\nIntroduzca coordenadas de la pieza a mover (letra y numero):");
-    scanf("%c",&letra_inicial);
-    scanf("%d ",&numero_inicial);
+    scanf(" %c",&letra_inicial);
+    scanf("%d",&numero_inicial);
 
 
 
@@ -253,7 +254,50 @@ void imprimir_tablero(char tablero[8][8]){//imprime por pantalla el tablero
         m=m+2;
         n=n+2;
         for(l=0;l<8;l++){
-            printf(" %c",tablero[k][l]);
+            switch (tablero[k][l])
+            {
+            case 'P':
+                printf(" %s", "\u265F");
+                break;
+            case 'T':
+                printf(" %s", "\u265C");
+                break;
+            case 'C':
+                printf(" %s", "\u265E");
+                break;
+            case 'A':
+                printf(" %s", "\u265D");
+                break;
+            case 'D':
+                printf(" %s", "\u265B");
+                break;
+            case 'R':
+                printf(" %s", "\u265A");
+                break;
+            case 'p':
+                printf(" %s", "\u2659");
+                break;
+            case 't':
+                printf(" %s", "\u2656");
+                break;
+            case 'c':
+                printf(" %s", "\u2658");
+                break;
+            case 'a':
+                printf(" %s", "\u2657");
+                break;
+            case 'd':
+                printf(" %s", "\u2655");
+                break;
+            case 'r':
+                printf(" %s", "\u2654");
+                break;
+            
+            default:
+                printf(" %c",tablero[k][l]);
+                break;
+            }
+            
         }
         if(k==7){
             printf(" %c %c ",margen_derecho[m],margen_derecho[n]);
@@ -267,6 +311,81 @@ void imprimir_tablero(char tablero[8][8]){//imprime por pantalla el tablero
         printf(" %c",j+97);
     }
     printf("\n\n\n");
+}
+
+void coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tablero[8][8]){
+    char opcion_sn=0,opcion_pieza=0;
+    int control_seleccion;
+    do{
+        printf("\nQuieres promocionar el peon?(S/N):");
+        scanf("%c",&opcion_sn);
+        control_seleccion=0;
+        if ((opcion_sn=='S')||(opcion_sn=='s')) {
+            printf("\nDama: escibe D\nTorre: escribe T\nCaballo: escribe C\nAlfil: escribe A\nElige una de las opciones:");
+            scanf(" %c",&opcion_pieza);
+            switch (opcion_pieza)
+            {
+                case 'D':
+                    if (tablero[*i_inicial][*j_inicial]>='a')//piezas blancas
+                    {
+                        tablero[*i_final][*j_final] = tablero[*i_inicial][*j_inicial];
+                        tablero[*i_inicial][*j_inicial] = 'd';
+                        imprimir_tablero(tablero);
+                    }else{
+                        tablero[*i_final][*j_final] = tablero[*i_inicial][*j_inicial];
+                        tablero[*i_inicial][*j_inicial] = 'D';
+                        imprimir_tablero(tablero);
+                    }
+                    break;
+        
+                case 'T':
+                    if (tablero[*i_inicial][*j_inicial]>='a')//piezas blancas
+                    {
+                        tablero[*i_final][*j_final] = tablero[*i_inicial][*j_inicial];
+                        tablero[*i_inicial][*j_inicial] = 't';
+                        imprimir_tablero(tablero);
+                    }else{
+                        tablero[*i_final][*j_final] = tablero[*i_inicial][*j_inicial];
+                        tablero[*i_inicial][*j_inicial] = 'T';
+                        imprimir_tablero(tablero);
+                    }
+                    break;
+        
+                case 'C':
+                    if (tablero[*i_inicial][*j_inicial]>='a')//piezas blancas
+                    {
+                        tablero[*i_final][*j_final] = tablero[*i_inicial][*j_inicial];
+                        tablero[*i_inicial][*j_inicial] = 'c';
+                        imprimir_tablero(tablero);
+                    }else{
+                        tablero[*i_final][*j_final] = tablero[*i_inicial][*j_inicial];
+                        tablero[*i_inicial][*j_inicial] = 'C';
+                        imprimir_tablero(tablero);
+                    }
+                    break;
+        
+                case 'A':
+                    if (tablero[*i_inicial][*j_inicial]>='a')//piezas blancas
+                    {
+                        tablero[*i_final][*j_final] = tablero[*i_inicial][*j_inicial];
+                        tablero[*i_inicial][*j_inicial] = 'a';
+                        imprimir_tablero(tablero);
+                    }else{
+                        tablero[*i_final][*j_final] = tablero[*i_inicial][*j_inicial];
+                        tablero[*i_inicial][*j_inicial] = 'A';
+                        imprimir_tablero(tablero);
+                    }
+                    break;
+        
+                default:
+                    control_seleccion=1;
+                    break;
+            }
+            
+        }else{
+            control_seleccion=1; 
+        }
+    }while (control_seleccion==1);
 }
 
 int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]){ //informa sobre si se puede realizar el movimiento indicado
@@ -319,25 +438,28 @@ int peones (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
     if ((tablero[*i_inicial][*j_inicial])=='P') { //peon negras 4 movimientos posibles
         
         if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial])) { //avanza 1
-            if ((*i_final<8)&&((tablero[*i_final][*j_final])=='.')) {
+            if ((*i_final<8)&&((tablero[*i_final][*j_final])=='.')) {//limites del tablero y que la posicion este vacia
+                if(*i_final==7){
+                    coronar(&*i_inicial, &*j_inicial, &*i_final, &*j_final, tablero);
+                }
                 return 0;
             }else{
                 return 1;
             }
         }else if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+2][*j_inicial])) { //avanza 2
-            if ((*i_inicial==1)&&((tablero[*i_final][*j_final])=='.')) {
+            if ((*i_inicial==1)&&((tablero[*i_final][*j_final])=='.')) {//desde la fila 1 y que la posicion este vacia
                 return 0;
             }else{
                 return 1;
             }
         }else if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial-1])) { //come hacia su derecha
-            if ((*i_final<8)&&((tablero[*i_final][*j_final])>='a')&&(0<=(*j_final))) {
+            if ((*i_final<8)&&((tablero[*i_final][*j_final])>='a')&&(0<=(*j_final))) {//limites del tablero y pieza en minusculas
                 return 0;
             }else{
                 return 1;
             }
         }else if ((tablero[*i_final][*j_final])==(tablero[*i_inicial+1][*j_inicial+1])) { //come hacia su izquierda
-            if ((*i_final<8)&&((tablero[*i_final][*j_final])>='a')&&(*j_final<8)) { //limites tablero y pieza minuscula
+            if ((*i_final<8)&&((tablero[*i_final][*j_final])>='a')&&(*j_final<8)) { //limites tablero y pieza en minusculas
                 return 0;
             }else{
                 return 1;
