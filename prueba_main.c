@@ -152,11 +152,7 @@ int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_f
     if ((turno_color==0)&&(((tablero[*i_inicial][*j_inicial])>='A')&&((tablero[*i_inicial][*j_inicial])<='T')))//turno_color=0 turno blancas 
     {
         return 1;
-<<<<<<< Updated upstream
-    }else if ((turno_color==1)&&((tablero[*i_inicial][*j_inicial])>='a'))
-=======
     }else if ((turno_color==1)&&((tablero[*i_inicial][*j_inicial])>='a'))//turno_color=1 turno negras
->>>>>>> Stashed changes
     {
         return 1;
     }
