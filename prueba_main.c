@@ -69,7 +69,7 @@ int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_f
     int numero_inicial=0,numero_final=0,turno_color=0;
     char letra_inicial=0,letra_final=0;
     
-    if ((*contador_movimientos%2)!=0) {
+    if ((*contador_movimientos%2)==0) {
         printf("\n\tTurno de piezas NEGRAS\n");
         turno_color=1;
 
@@ -151,7 +151,7 @@ int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_f
     if ((turno_color==0)&&(((tablero[*i_inicial][*j_inicial])>='A')&&((tablero[*i_inicial][*j_inicial])<='T')))//turno_color=0 turno blancas
     {
         return 1;
-    }else if ((turno_color==1)&&((tablero[*i_inicial][*j_inicial])>='A'))
+    }else if ((turno_color==1)&&((tablero[*i_inicial][*j_inicial])>='a'))
     {
         return 1;
     }
