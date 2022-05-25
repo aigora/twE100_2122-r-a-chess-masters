@@ -17,10 +17,10 @@ player negras;
 //switch menu principal
 do{
     printf("AJEDREZ\n\n");
-    printf("\n1.Nueva partida\n2.Cargar partida\n3.Torneos\n4.Registro de partidas\n5.Reglas Ajedrez\n6.Preferencias\n");
+    printf("\n1.Nueva partida\n2.Cargar partida\n3.Registro de partidas\n4.Reglas Ajedrez\n");
     scanf("%d",&menu);
     //fflush(stdin);
-}while(menu<1||menu>5);
+}while(menu<1||menu>4);
  
 switch(menu){
     case 1: //nueva partida
@@ -76,7 +76,7 @@ switch(menu){
                     }
 
                 case 3:
-                    //preguntar como volver atras e el menu sin usar goto
+                    
             }
 
     case 2: //cargar partida
