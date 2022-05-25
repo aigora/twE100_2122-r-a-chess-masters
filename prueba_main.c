@@ -148,10 +148,15 @@ int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_f
             break;
     }
     
-    if ((turno_color==0)&&(((tablero[*i_inicial][*j_inicial])>='A')&&((tablero[*i_inicial][*j_inicial])<='T')))//turno_color=0 turno blancas
+    //impedir movimiento de fichas de otro color
+    if ((turno_color==0)&&(((tablero[*i_inicial][*j_inicial])>='A')&&((tablero[*i_inicial][*j_inicial])<='T')))//turno_color=0 turno blancas 
     {
         return 1;
+<<<<<<< Updated upstream
     }else if ((turno_color==1)&&((tablero[*i_inicial][*j_inicial])>='a'))
+=======
+    }else if ((turno_color==1)&&((tablero[*i_inicial][*j_inicial])>='a'))//turno_color=1 turno negras
+>>>>>>> Stashed changes
     {
         return 1;
     }
@@ -407,18 +412,22 @@ int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
     int i_0=*i_inicial, j_0=*j_inicial, i_1=*i_final, j_1=*j_final;
     int retorno_peones,retorno_caballos,retorno_alfiles,retorno_torres,retorno_reyes,retorno_damas;
     
-    int i,j;//para test imprimir matriz
+    //int i,j;//para test imprimir matriz
     
+    /*  //test entrada de datos
     printf("\ni_inicial=%d\nj_inicial=%d\ni_final=%d\nj_final=%d\n",i_0,j_0,i_1,j_1);
     printf("\ni_inicial=%d\nj_inicial=%d\ni_final=%d\nj_final=%d\n",*i_inicial,*j_inicial,*i_final,*j_final);
     printf("\npieza inicial=%c\n",tablero[i_0][j_0]);
+    */
     
+    /* //test matriz tablero
     for(i=0;i<8;i++){
         printf("\t\n");
         for(j=0;j<8;j++){
             printf(" %c",tablero[i][j]);
         }
     }
+    */
     
     if (((tablero[*i_inicial][*j_inicial])=='P')||((tablero[*i_inicial][*j_inicial])=='p')) {
         retorno_peones=peones(&i_0,&j_0,&i_1,&j_1,tablero);
