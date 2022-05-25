@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1653469604 source:c:\users\upm\desktop\chessmasters\chessmasters_project\chessmasters_funciones.c
+	"chessmasters_funciones.h"
+
+1653469604 c:\users\upm\desktop\chessmasters\chessmasters_project\chessmasters_funciones.h
+	<stdio.h>
+	"chessmasters_piezas.h"
+
+1653469604 c:\users\upm\desktop\chessmasters\chessmasters_project\chessmasters_piezas.h
+	<stdio.h>
+
+1653469604 source:c:\users\upm\desktop\chessmasters\chessmasters_project\chessmasters_main.c
+	<stdio.h>
+	"chessmasters_piezas.h"
+	"chessmasters_funciones.h"
+
+1653469604 source:c:\users\upm\desktop\chessmasters\chessmasters_project\chessmasters_piezas.c
+	"chessmasters_piezas.h"
+
