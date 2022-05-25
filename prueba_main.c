@@ -4,14 +4,10 @@
 
 
 void mover_pieza(int i_inicial, int j_inicial, int i_final,   int j_final, char tablero[8][8]);
-
 int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final,   int *j_final, int *contador_movimientos, char tablero[8][8]);
-
-
 void tablero_inicial(char tablero[8][8]);
 void imprimir_tablero(char tablero[8][8]);
 int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]);
-
 void coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tablero[8][8]);
 
 int peones (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]);
@@ -331,40 +327,42 @@ void imprimir_tablero(char tablero[8][8]){//imprime por pantalla el tablero
 
 void coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tablero[8][8]){
     char opcion_sn=0,opcion_pieza=0;
-    int control_seleccion;
-    do{
+    int control_seleccion=1;
+    while(control_seleccion==1){
         printf("\nQuieres promocionar el peon?(S/N):");
         scanf("%c",&opcion_sn);
-        control_seleccion=0;
+        control_seleccion=1;
         if ((opcion_sn=='S')||(opcion_sn=='s')) {
             printf("\nDama: escibe D\nTorre: escribe T\nCaballo: escribe C\nAlfil: escribe A\nElige una de las opciones:");
             scanf(" %c",&opcion_pieza);
             switch (opcion_pieza)
             {
                 case 'D':
-                    if (tablero[*i_inicial][*j_inicial]>='a')//piezas blancas
+                    if (tablero[*i_inicial][*j_inicial]>='a')//peones blancos
                     {
                         tablero[*i_final][*j_final] = tablero[*i_inicial][*j_inicial];
                         tablero[*i_inicial][*j_inicial] = 'd';
                         imprimir_tablero(tablero);
-                    }else{
+                    }else{//peones negros
                         tablero[*i_final][*j_final] = tablero[*i_inicial][*j_inicial];
                         tablero[*i_inicial][*j_inicial] = 'D';
                         imprimir_tablero(tablero);
                     }
+                    control_seleccion=0;
                     break;
         
                 case 'T':
-                    if (tablero[*i_inicial][*j_inicial]>='a')//piezas blancas
+                    if (tablero[*i_inicial][*j_inicial]>='a')//peones blancos
                     {
                         tablero[*i_final][*j_final] = tablero[*i_inicial][*j_inicial];
                         tablero[*i_inicial][*j_inicial] = 't';
                         imprimir_tablero(tablero);
-                    }else{
+                    }else{//peones negros
                         tablero[*i_final][*j_final] = tablero[*i_inicial][*j_inicial];
                         tablero[*i_inicial][*j_inicial] = 'T';
                         imprimir_tablero(tablero);
                     }
+                    control_seleccion=0;
                     break;
         
                 case 'C':
@@ -378,6 +376,7 @@ void coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tab
                         tablero[*i_inicial][*j_inicial] = 'C';
                         imprimir_tablero(tablero);
                     }
+                    control_seleccion=0;
                     break;
         
                 case 'A':
@@ -391,6 +390,7 @@ void coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tab
                         tablero[*i_inicial][*j_inicial] = 'A';
                         imprimir_tablero(tablero);
                     }
+                    control_seleccion=0;
                     break;
         
                 default:
@@ -398,10 +398,13 @@ void coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tab
                     break;
             }
 
+        }else if ((opcion_sn=='N')||(opcion_sn=='n')){
+            printf("\nHas elegido no promocionar tu peon");
+            control_seleccion=0; 
         }else{
-            control_seleccion=1; 
+            control_seleccion=1;
         }
-    }while (control_seleccion==1);
+    }
 }
 
 int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]){ //informa sobre si se puede realizar el movimiento indicado
@@ -509,6 +512,9 @@ int peones (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
         
         if (((*i_final)==(*i_inicial-1)) && ((*j_final)==(*j_inicial))) {//avanza 1 i_inicial-1
             if ((*i_final>=0)&&((tablero[*i_final][*j_final])=='.')) {//limites del tablero y que la posicion este vacia
+             if(*i_final==0){
+                    coronar(&*i_inicial, &*j_inicial, &*i_final, &*j_final, tablero);
+                }
                 return 0;
             }else{
                 return 1;
