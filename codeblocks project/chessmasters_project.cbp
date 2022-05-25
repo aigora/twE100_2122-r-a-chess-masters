@@ -31,6 +31,21 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="chessmasters_funciones.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="chessmasters_funciones.h" />
+		<Unit filename="chessmasters_main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="chessmasters_menu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="chessmasters_menu.h" />
+		<Unit filename="chessmasters_piezas.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="chessmasters_piezas.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
