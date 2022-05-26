@@ -1,5 +1,35 @@
 #include "chessmasters_funciones.h"
 
+void reinicio_juego(int *contador_movimientos, char tablero[8][8]){
+    int i_0,j_0,i_1,j_1,contador,fin_partida=0,retorno_introduce_coordenadas,retorno_comprobar;
+    imprimir_tablero(tablero);
+    do{
+        retorno_introduce_coordenadas = introduce_coordenadas(&i_0,&j_0,&i_1,&j_1,&contador,tablero);
+        printf("\nretorno_introduce_coordenadas=%d\n",retorno_introduce_coordenadas);//test
+
+        if ((retorno_introduce_coordenadas)==0) {
+
+            retorno_comprobar = comprobar(&i_0,&j_0,&i_1,&j_1,tablero);
+            printf("\nretorno_comprobar=%d\n",retorno_comprobar);//test
+
+            if ((retorno_comprobar)==0){
+                mover_pieza(i_0,j_0,i_1,j_1,tablero);
+                
+            }else{
+                printf("\nIntroduzca un movimiento valido");
+                contador=contador-1;
+            }
+        }else{
+            printf("\nIntroduzca un movimiento valido");
+           
+        }
+        
+
+    }while(fin_partida==0);
+
+}
+
+
 void mover_pieza(int i_inicial, int j_inicial, int i_final,   int j_final, char tablero[8][8]) {
     tablero[i_final][j_final] = tablero[i_inicial][j_inicial];
     tablero[i_inicial][j_inicial] = '.';
@@ -21,10 +51,11 @@ int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_f
     }
     printf("\nIntroduzca coordenadas de la pieza a mover (letra y numero):");
     scanf(" %c",&letra_inicial);
+    if (letra_inicial=='m'||letra_inicial=='M')
+    {
+        menu_partida(&*i_inicial,&*j_inicial,&*i_final,&*j_final,&*contador_movimientos,tablero);
+    }
     scanf("%d",&numero_inicial);
-
-
-
 
     printf("\nprueba:Coordenadas introducidas %c%d \n",letra_inicial,numero_inicial);//test
     switch (letra_inicial) {
@@ -90,7 +121,7 @@ int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_f
     }
     
     //impedir movimiento de fichas de otro color
-    if ((turno_color==0)&&(((tablero[*i_inicial][*j_inicial])>='A')&&((tablero[*i_inicial][*j_inicial])<='T')))//turno_color=0 turno blancas
+    if ((turno_color==0)&&(((tablero[*i_inicial][*j_inicial])>='A')&&((tablero[*i_inicial][*j_inicial])<='T')))//turno_color=0 turno blancas 
     {
         return 1;
     }else if ((turno_color==1)&&((tablero[*i_inicial][*j_inicial])>='a'))//turno_color=1 turno negras
@@ -174,8 +205,6 @@ int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_f
 }
 
 
-//libreria funciones
-
 
 void tablero_inicial(char tablero[8][8]){ //rellenamos al inicio de partida la matriz del tablero
     int i,j;
@@ -192,7 +221,12 @@ void tablero_inicial(char tablero[8][8]){ //rellenamos al inicio de partida la m
 }
 
 void imprimir_tablero(char tablero[8][8]){//imprime por pantalla el tablero
-    int i,j,k,l,m=0,n=1,num_margen;
+    int i,j,k,l,m=0,n=1,num_margen,sistema_operativo=0;
+    
+    #ifdef _WIN32
+        sistema_operativo=1;//el SO es windows
+    #endif
+    
     char margen_derecho[19]="  |8|7|6|5|4|3|2|1";
     printf("\n\n\n");
     printf("\t    ");
@@ -208,52 +242,59 @@ void imprimir_tablero(char tablero[8][8]){//imprime por pantalla el tablero
         m=m+2;
         n=n+2;
         for(l=0;l<8;l++){
-            /*
-            switch (tablero[k][l])
-            {
-            case 'P':
-                printf(" %s", "\u265F");
-                break;
-            case 'T':
-                printf(" %s", "\u265C");
-                break;
-            case 'C':
-                printf(" %s", "\u265E");
-                break;
-            case 'A':
-                printf(" %s", "\u265D");
-                break;
-            case 'D':
-                printf(" %s", "\u265B");
-                break;
-            case 'R':
-                printf(" %s", "\u265A");
-                break;
-            case 'p':
-                printf(" %s", "\u2659");
-                break;
-            case 't':
-                printf(" %s", "\u2656");
-                break;
-            case 'c':
-                printf(" %s", "\u2658");
-                break;
-            case 'a':
-                printf(" %s", "\u2657");
-                break;
-            case 'd':
-                printf(" %s", "\u2655");
-                break;
-            case 'r':
-                printf(" %s", "\u2654");
-                break;
-            
-            default:
-                printf(" %c",tablero[k][l]);
-                break;
-            }*/ //unicode
+            if (sistema_operativo==1) {
 
-            printf(" %c",tablero[k][l]); //sin unicode
+               printf(" %c",tablero[k][l]); //sin unicode
+                
+                
+            }else {
+                //SO es linux o macos
+
+                switch (tablero[k][l]){
+                    case 'P':
+                        printf(" %s", "\u265F");
+                        break;
+                    case 'T':
+                        printf(" %s", "\u265C");
+                        break;
+                    case 'C':
+                        printf(" %s", "\u265E");
+                        break;
+                    case 'A':
+                        printf(" %s", "\u265D");
+                        break;
+                    case 'D':
+                        printf(" %s", "\u265B");
+                        break;
+                    case 'R':
+                        printf(" %s", "\u265A");
+                        break;
+                    case 'p':
+                        printf(" %s", "\u2659");
+                        break;
+                    case 't':
+                        printf(" %s", "\u2656");
+                        break;
+                    case 'c':
+                        printf(" %s", "\u2658");
+                        break;
+                    case 'a':
+                        printf(" %s", "\u2657");
+                        break;
+                    case 'd':
+                        printf(" %s", "\u2655");
+                        break;
+                    case 'r':
+                        printf(" %s", "\u2654");
+                        break;
+            
+                    default:
+                        printf(" %c",tablero[k][l]);
+                        break;
+                }
+             //unicode 
+            }
+            
 
         }
         if(k==7){
@@ -345,7 +386,7 @@ void coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tab
 
         }else if ((opcion_sn=='N')||(opcion_sn=='n')){
             printf("\nHas elegido no promocionar tu peon");
-            control_seleccion=0;
+            control_seleccion=0; 
         }else{
             control_seleccion=1;
         }
