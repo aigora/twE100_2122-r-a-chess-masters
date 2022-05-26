@@ -2,7 +2,14 @@
 //#include "chessmasters_piezas.h"
 //#include "chessmasters_funciones.h"
 
+//menu
+typedef struct{
+        char name[30];
+} player;
+int menu_principal();
 
+
+//funciones
 void mover_pieza(int i_inicial, int j_inicial, int i_final,   int j_final, char tablero[8][8]);
 int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final,   int *j_final, int *contador_movimientos, char tablero[8][8]);
 void tablero_inicial(char tablero[8][8]);
@@ -10,6 +17,7 @@ void imprimir_tablero(char tablero[8][8]);
 int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]);
 void coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tablero[8][8]);
 
+//piezas
 int peones (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]);
 int caballos (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]);
 int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]);
@@ -54,6 +62,74 @@ int main() {
 
     return 0;
 }
+
+//libreria menu
+
+int menu_principal(){
+     //Inicializaciones
+    int menu,seleccion_partida=1;
+    char c;
+    player blancas;
+    player negras;
+   
+    //switch menu principal
+    do{
+        printf("AJEDREZ\n\n");
+        printf("\n1.Nueva partida\n2.Cargar partida\n3.Registro de partidas\n4.Reglas Ajedrez\n");
+        scanf("%d",&menu);
+        
+    }while(menu<1||menu>4);
+ 
+    switch(menu){
+        case 1: //nueva partida
+            printf("Jugador de negras: Introduzca su nombre\n");
+            scanf("%s", negras.name);
+
+            printf("Jugador de blancas: Introduzca su nombre\n");
+             scanf("%s", blancas.name);
+            
+            printf("\nINICIANDO  PARTIDA, %s contra %s\n", blancas.name,negras.name);
+            return 0;
+
+             
+        case 2: //cargar partida
+            while(seleccion_partida!=0){
+                printf("\n\nSeleccione una partida guardada\n\n");
+                //completar
+            }
+        
+        //case 3://registro de partidas
+
+        case 4://Instrucciones Ajedrez
+            
+            FILE *pf_reglas;
+  
+            pf_reglas = fopen("twE100_2122-r-a-chess-masters/ficheros/reglas_ajedrez.txt", "r");
+
+            if (pf_reglas == NULL) {
+                fclose (pf_reglas);
+                printf("\nError al abrir el fichero.\n");
+                return 1;
+            }
+
+            while (!feof (pf_reglas)) {//bucle para imprimir en terminal
+                c = getc (pf_reglas);
+                printf ("%c", c);
+            }
+            fclose(pf_reglas);
+
+
+
+    }
+    return 1;
+}
+
+//libreria ficheros
+
+
+
+
+//libreria funciones
 
 void mover_pieza(int i_inicial, int j_inicial, int i_final,   int j_final, char tablero[8][8]) {
     tablero[i_final][j_final] = tablero[i_inicial][j_inicial];
@@ -229,8 +305,6 @@ int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_f
 }
 
 
-//libreria funciones
-
 
 void tablero_inicial(char tablero[8][8]){ //rellenamos al inicio de partida la matriz del tablero
     int i,j;
@@ -247,7 +321,12 @@ void tablero_inicial(char tablero[8][8]){ //rellenamos al inicio de partida la m
 }
 
 void imprimir_tablero(char tablero[8][8]){//imprime por pantalla el tablero
-    int i,j,k,l,m=0,n=1,num_margen;
+    int i,j,k,l,m=0,n=1,num_margen,sistema_operativo=0;
+    
+    #ifdef _WIN32
+        sistema_operativo=1;//el SO es windows
+    #endif
+    
     char margen_derecho[19]="  |8|7|6|5|4|3|2|1";
     printf("\n\n\n");
     printf("\t    ");
@@ -263,52 +342,59 @@ void imprimir_tablero(char tablero[8][8]){//imprime por pantalla el tablero
         m=m+2;
         n=n+2;
         for(l=0;l<8;l++){
-            /*
-            switch (tablero[k][l])
-            {
-            case 'P':
-                printf(" %s", "\u265F");
-                break;
-            case 'T':
-                printf(" %s", "\u265C");
-                break;
-            case 'C':
-                printf(" %s", "\u265E");
-                break;
-            case 'A':
-                printf(" %s", "\u265D");
-                break;
-            case 'D':
-                printf(" %s", "\u265B");
-                break;
-            case 'R':
-                printf(" %s", "\u265A");
-                break;
-            case 'p':
-                printf(" %s", "\u2659");
-                break;
-            case 't':
-                printf(" %s", "\u2656");
-                break;
-            case 'c':
-                printf(" %s", "\u2658");
-                break;
-            case 'a':
-                printf(" %s", "\u2657");
-                break;
-            case 'd':
-                printf(" %s", "\u2655");
-                break;
-            case 'r':
-                printf(" %s", "\u2654");
-                break;
-            
-            default:
-                printf(" %c",tablero[k][l]);
-                break;
-            }*/ //unicode 
+            if (sistema_operativo==1) {
 
-            printf(" %c",tablero[k][l]); //sin unicode
+               printf(" %c",tablero[k][l]); //sin unicode
+                
+                
+            }else {
+                //SO es linux o macos
+
+                switch (tablero[k][l]){
+                    case 'P':
+                        printf(" %s", "\u265F");
+                        break;
+                    case 'T':
+                        printf(" %s", "\u265C");
+                        break;
+                    case 'C':
+                        printf(" %s", "\u265E");
+                        break;
+                    case 'A':
+                        printf(" %s", "\u265D");
+                        break;
+                    case 'D':
+                        printf(" %s", "\u265B");
+                        break;
+                    case 'R':
+                        printf(" %s", "\u265A");
+                        break;
+                    case 'p':
+                        printf(" %s", "\u2659");
+                        break;
+                    case 't':
+                        printf(" %s", "\u2656");
+                        break;
+                    case 'c':
+                        printf(" %s", "\u2658");
+                        break;
+                    case 'a':
+                        printf(" %s", "\u2657");
+                        break;
+                    case 'd':
+                        printf(" %s", "\u2655");
+                        break;
+                    case 'r':
+                        printf(" %s", "\u2654");
+                        break;
+            
+                    default:
+                        printf(" %c",tablero[k][l]);
+                        break;
+                }
+             //unicode 
+            }
+            
 
         }
         if(k==7){
