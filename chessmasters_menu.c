@@ -19,7 +19,8 @@ int menu_principal(){
  
     switch(menu){
         case 1: //nueva partida
-            printf("\nINICIANDO  PARTIDA\nPara acceder al menu durante la partida pulse 'M'\nPara ver si puede enrocar pulse 'E'\nPara finalizar la partida en tablas pulse 'T'\n");
+            printf("\nINICIANDO  PARTIDA\nPara acceder al menu durante la partida pulse 'M'\nPara finalizar la partida en tablas pulse 'T'\n");
+            //Para ver si puede enrocar pulse 'E'\n
             tablero_inicial(tablero);
             inicio_juego(&contador,tablero,mov_enroque);
             return 0;

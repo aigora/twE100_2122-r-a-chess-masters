@@ -497,14 +497,14 @@ void captura_alpaso(int i_anterior, int j_anterior, int *i_inicial, int *j_inici
                     tablero[i_1][j_1] = tablero[i_0][j_0];
                     tablero[i_0][j_0] = '.';
                     tablero[i_anterior-2][j_anterior]='.';
-                    imprimir_tablero(tablero);
+                    
                     inicio_juego(&*contador_movimientos,tablero,mov_enroque);   
                 }else if ((i_1==(i_anterior+1))&&(j_1==j_anterior))
                 {
                     tablero[i_1][j_1] = tablero[i_0][j_0];
                     tablero[i_0][j_0] = '.';
                     tablero[i_anterior+2][j_anterior]='.';
-                    imprimir_tablero(tablero);
+                    
                     inicio_juego(&*contador_movimientos,tablero,mov_enroque);
                 }else{
                     printf("\nIntroduzca un movimiento valido");
