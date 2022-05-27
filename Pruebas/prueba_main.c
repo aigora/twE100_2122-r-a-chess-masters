@@ -3,13 +3,11 @@
 //#include "chessmasters_piezas.h"
 //#include "chessmasters_funciones.h"
 //#include "chessmasters_menu.h"
+#ifdef _WIN32
+  #include<windows.h>
+#endif  
 
-//menu
-typedef struct{
-        char name[30];
-} player;
-int menu_principal();
-int menu_partida(int *i_inicial, int *j_inicial, int *i_final,   int *j_final, int *contador_movimientos, char tablero[8][8]);
+//funciones evaluacion
 
 
 //ficheros
@@ -19,58 +17,45 @@ int cargar_partida();
 
 
 //funciones
-void reinicio_juego(int *contador_movimientos, char tablero[8][8]);
-void mover_pieza(int i_inicial, int j_inicial, int i_final,   int j_final, char tablero[8][8]);
-int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final,   int *j_final, int *contador_movimientos, char tablero[8][8]);
+typedef struct
+{
+  int matriz[8][8];
+  
+} eval;
+
+
+typedef struct{
+        char name[30];
+} player;
+int menu_principal();
+int menu_partida(int *i_inicial, int *j_inicial, int *i_final,   int *j_final, int *contador_movimientos, char tablero[8][8],int mov_enroque[6]);
+
+
+void captura_alpaso(int i_anterior, int j_anterior, int *i_inicial, int *j_inicial, int *i_final,   int *j_final, int *contador_movimientos, char tablero[8][8], int mov_enroque[6]);
+void limpiar_pantalla();
+void inicio_juego(int *contador_movimientos, char tablero[8][8], int mov_enroque[6]);
+void mover_pieza(int i_inicial, int j_inicial, int i_final,   int j_final, char tablero[8][8], int mov_enroque[6]);
+int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final,   int *j_final, int *contador_movimientos, char tablero[8][8], int mov_enroque[6]);
 void tablero_inicial(char tablero[8][8]);
 void imprimir_tablero(char tablero[8][8]);
-int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]);
+int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8],int *contador_movimientos);
 void coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tablero[8][8]);
+void enrocar(int mov_enroque[6]);
+void matrices_evaluacion(int blancas_defensa[8][8],int negras_defensa[8][8]);
+void inicializar_matrices(eval piezas[32]);
+
 
 //piezas
-int peones (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]);
-int caballos (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]);
-int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]);
-int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]);
-int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]);
-int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]);
+int peones (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8],int eval_aux[8][8]);
+int caballos (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8],int eval_aux[8][8]);
+int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8],int eval_aux[8][8]);
+int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8],int eval_aux[8][8]);
+int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8],int eval_aux[8][8]);
+int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8],int eval_aux[8][8]);
 
 
 int main() {
-    int i_0,j_0,i_1,j_1,contador=1,fin_partida=0;
-    char tablero[8][8];
-
-
-    int retorno_introduce_coordenadas,retorno_comprobar;
     menu_principal();
-    tablero_inicial(tablero);
-    imprimir_tablero(tablero);
-    do{
-        retorno_introduce_coordenadas = introduce_coordenadas(&i_0,&j_0,&i_1,&j_1,&contador,tablero);
-        printf("\nretorno_introduce_coordenadas=%d\n",retorno_introduce_coordenadas);//test
-
-        if ((retorno_introduce_coordenadas)==0) {
-
-            retorno_comprobar = comprobar(&i_0,&j_0,&i_1,&j_1,tablero);
-            printf("\nretorno_comprobar=%d\n",retorno_comprobar);//test
-
-            if ((retorno_comprobar)==0){
-                mover_pieza(i_0,j_0,i_1,j_1,tablero);
-                
-            }else{
-                printf("\nIntroduzca un movimiento valido");
-                contador=contador-1;
-            }
-        }else{
-            printf("\nIntroduzca un movimiento valido");
-           
-        }
-        
-
-    }while(fin_partida==0);
- 
-
-
     return 0;
 }
 
@@ -78,36 +63,37 @@ int main() {
 
 int menu_principal(){
      //Inicializaciones
-    int menu;
+    int menu,contador=1, mov_enroque[6]={0,0,0,0,0,0};
     char c;
+    char tablero[8][8];
     
 
     //switch menu principal
     do{
-        printf("AJEDREZ\n\n");
-        printf("\n1.Nueva partida\n2.Cargar partida\n3.Registro de partidas\n4.Reglas Ajedrez\nSeleccione una opcion:");
+        printf("\n\nAJEDREZ\n\n");
+        printf("\n1.Nueva partida\n2.Cargar partida\n3.Reglas Ajedrez\nSeleccione una opcion:");
         scanf("%d",&menu);
         
     }while(menu<1||menu>4);
  
     switch(menu){
         case 1: //nueva partida
-            printf("\nINICIANDO  PARTIDA");
+            printf("\nINICIANDO  PARTIDA\nPara acceder al menu durante la partida pulse 'M'\nPara ver si puede enrocar pulse 'E'\nPara finalizar la partida en tablas pulse 'T'\n");
+            tablero_inicial(tablero);
+            inicio_juego(&contador,tablero,mov_enroque);
             return 0;
 
-             
         case 2: //cargar partida
             cargar_partida();
-        
-        //case 3://registro de partidas
-
-        case 4://Instrucciones Ajedrez
+    
+        case 3://Instrucciones Ajedrez
             imprimir_reglas();
+            menu_principal();
     }
     return 1;
 }
 
-int menu_partida(int *i_inicial, int *j_inicial, int *i_final,   int *j_final, int *contador_movimientos, char tablero[8][8]){
+int menu_partida(int *i_inicial, int *j_inicial, int *i_final,   int *j_final, int *contador_movimientos, char tablero[8][8], int mov_enroque[6]){
     int seleccion_menu;
     printf("\n\nMENU DE PARTIDA\n");
     do{
@@ -119,7 +105,7 @@ int menu_partida(int *i_inicial, int *j_inicial, int *i_final,   int *j_final, i
     {
     case 1://continuar
         imprimir_tablero(tablero);
-        introduce_coordenadas(&*i_inicial,&*j_inicial,&*i_final,&*j_final,&*contador_movimientos,tablero);
+        introduce_coordenadas(&*i_inicial,&*j_inicial,&*i_final,&*j_final,&*contador_movimientos,tablero,mov_enroque);
         break;
     case 2://guardar
         guardar_partida(&*contador_movimientos,tablero);
@@ -171,7 +157,7 @@ int menu_partida(int *i_inicial, int *j_inicial, int *i_final,   int *j_final, i
     scanf("%s", negras.name);
     
     printf("Escojan uno de los slots de guardado:\n");
-    printf("\nPartida 1\nPartida 2\nPartida 3\nPartida 4\nPartida 5\nSeleccione una opcion:");
+    printf("\nSlot 1\nSlot 2\nSlot 3\nSlot 4\nSlot 5\nSeleccione una opcion:");
 
     do{
         scanf("%d",&seleccion_slot);
@@ -340,7 +326,7 @@ int menu_partida(int *i_inicial, int *j_inicial, int *i_final,   int *j_final, i
 
 int cargar_partida(){
     player blancas, negras;
-    int contador=0,seleccion_slot,i,j;
+    int contador=0,seleccion_slot,i,j,control_sn, mov_enroque[6]={0,0,0,0,0,0};
     char seleccion_sn, tablero[8][8], vacio[10]="Empty";
 
     printf("\nSlot 1\nSlot 2\nSlot 3\nSlot 4\nSlot 5\nVolver al menu principal 6\nIntroduzca el numero del slot que quiere cargar:");
@@ -357,18 +343,37 @@ int cargar_partida(){
             printf("\nError al abrir el fichero.\n");
             return 1;
         }else{
-            fscanf(valores1, "%[^,];%[^,];%d",blancas.name, negras.name, &contador);
+            fscanf(valores1, "%[^,],%[^,],%d",blancas.name, negras.name, &contador);
             fclose(valores1);
         }
         if (strcmp(blancas.name, vacio)==0) {
             printf("\nEl slot esta vacio");
             cargar_partida();
         }else{
-        printf("\n¿ Quiere reanudar la partida %s VS %s ?(S/N)",blancas.name,negras.name );
+        printf("\nQuiere reanudar la partida %s VS %s ?(S/N):",blancas.name,negras.name );
         }
         do{
             scanf("%c",&seleccion_sn);
-        }while((seleccion_sn!='S')||(seleccion_sn!='s')||(seleccion_sn!='N')||(seleccion_sn!='n'));
+            switch (seleccion_sn)
+            {
+            case 'S':
+                control_sn=0;
+                break;
+            case 's':
+                control_sn=0;
+                break;
+            case 'N':
+                control_sn=0;
+                break;
+            case 'n':
+                control_sn=0;
+                break;
+            default:
+                control_sn=1;
+                break;
+            }
+        }while(control_sn==1);
+        //(seleccion_sn!='S')||(seleccion_sn!='s')||(seleccion_sn!='N')||(seleccion_sn!='n')
         if ((seleccion_sn=='N')||(seleccion_sn=='n')) {
             cargar_partida();
         }else{
@@ -387,7 +392,7 @@ int cargar_partida(){
                 }
             }
             fclose (slot1);
-            reinicio_juego(&contador,tablero);
+            inicio_juego(&contador,tablero,mov_enroque);
         }
         
 
@@ -399,18 +404,36 @@ int cargar_partida(){
             printf("\nError al abrir el fichero.\n");
             return 1;
         }else{
-            fscanf(valores2, "%[^,];%[^,];%d",blancas.name, negras.name, &contador);
+            fscanf(valores2, "%[^,],%[^,],%d",blancas.name, negras.name, &contador);
             fclose(valores2);
         }
         if (strcmp(blancas.name, vacio)==0) {
             printf("\nEl slot esta vacio");
             cargar_partida();
         }else{
-        printf("¿Quiere reanudar la partida %s VS %s?(S/N)",blancas.name,negras.name );
+        printf("\nQuiere reanudar la partida %s VS %s?(S/N);",blancas.name,negras.name );
         }
         do{
             scanf("%c",&seleccion_sn);
-        }while((seleccion_sn!='S')||(seleccion_sn!='s')||(seleccion_sn!='N')||(seleccion_sn!='n'));
+            switch (seleccion_sn)
+            {
+            case 'S':
+                control_sn=0;
+                break;
+            case 's':
+                control_sn=0;
+                break;
+            case 'N':
+                control_sn=0;
+                break;
+            case 'n':
+                control_sn=0;
+                break;
+            default:
+                control_sn=1;
+                break;
+            }
+        }while(control_sn==1);
         if ((seleccion_sn=='N')||(seleccion_sn=='n')) {
             cargar_partida();
         }else{
@@ -429,7 +452,7 @@ int cargar_partida(){
                 }
             }
             fclose (slot2);
-            reinicio_juego(&contador,tablero);
+            inicio_juego(&contador,tablero,mov_enroque);
         }
     
     }else if (seleccion_slot==3) {
@@ -439,18 +462,36 @@ int cargar_partida(){
             printf("\nError al abrir el fichero.\n");
             return 1;
         }else{
-            fscanf(valores3, "%[^,];%[^,];%d",blancas.name, negras.name, &contador);
+            fscanf(valores3, "%[^,],%[^,],%d",blancas.name, negras.name, &contador);
             fclose(valores3);
         }
         if (strcmp(blancas.name, vacio)==0) {
             printf("\nEl slot esta vacio");
             cargar_partida();
         }else{
-        printf("¿Quiere reanudar la partida %s VS %s?(S/N)",blancas.name,negras.name );
+        printf("\nQuiere reanudar la partida %s VS %s?(S/N):",blancas.name,negras.name );
         }
-        do{
+       do{
             scanf("%c",&seleccion_sn);
-        }while((seleccion_sn!='S')||(seleccion_sn!='s')||(seleccion_sn!='N')||(seleccion_sn!='n'));
+            switch (seleccion_sn)
+            {
+            case 'S':
+                control_sn=0;
+                break;
+            case 's':
+                control_sn=0;
+                break;
+            case 'N':
+                control_sn=0;
+                break;
+            case 'n':
+                control_sn=0;
+                break;
+            default:
+                control_sn=1;
+                break;
+            }
+        }while(control_sn==1);
         if ((seleccion_sn=='N')||(seleccion_sn=='n')) {
             cargar_partida();
         }else{
@@ -469,7 +510,7 @@ int cargar_partida(){
                 }
             }
             fclose (slot3);
-            reinicio_juego(&contador,tablero);
+            inicio_juego(&contador,tablero,mov_enroque);
         } 
     }else if (seleccion_slot==4) {
 
@@ -479,18 +520,36 @@ int cargar_partida(){
             printf("\nError al abrir el fichero.\n");
             return 1;
         }else{
-            fscanf(valores4, "%[^,];%[^,];%d",blancas.name, negras.name, &contador);
+            fscanf(valores4, "%[^,],%[^,],%d",blancas.name, negras.name, &contador);
             fclose(valores4);
         }
         if (strcmp(blancas.name, vacio)==0) {
             printf("\nEl slot esta vacio");
             cargar_partida();
         }else{
-        printf("¿Quiere reanudar la partida %s VS %s?(S/N)",blancas.name,negras.name );
+        printf("\nQuiere reanudar la partida %s VS %s?(S/N):",blancas.name,negras.name );
         }
-        do{
+       do{
             scanf("%c",&seleccion_sn);
-        }while((seleccion_sn!='S')||(seleccion_sn!='s')||(seleccion_sn!='N')||(seleccion_sn!='n'));
+            switch (seleccion_sn)
+            {
+            case 'S':
+                control_sn=0;
+                break;
+            case 's':
+                control_sn=0;
+                break;
+            case 'N':
+                control_sn=0;
+                break;
+            case 'n':
+                control_sn=0;
+                break;
+            default:
+                control_sn=1;
+                break;
+            }
+        }while(control_sn==1);
         if ((seleccion_sn=='N')||(seleccion_sn=='n')) {
             cargar_partida();
         }else{
@@ -509,7 +568,7 @@ int cargar_partida(){
                 }
             }
             fclose (slot4);
-            reinicio_juego(&contador,tablero);
+            inicio_juego(&contador,tablero,mov_enroque);
         }
     }else if (seleccion_slot==5) {
 
@@ -519,18 +578,36 @@ int cargar_partida(){
             printf("\nError al abrir el fichero.\n");
             return 1;
         }else{
-            fscanf(valores5, "%[^,];%[^,];%d",blancas.name, negras.name, &contador);
+            fscanf(valores5, "%[^,],%[^,],%d",blancas.name, negras.name, &contador);
             fclose(valores5);
         }
         if (strcmp(blancas.name, vacio)==0) {
             printf("\nEl slot esta vacio");
             cargar_partida();
         }else{
-        printf("¿Quiere reanudar la partida %s VS %s?(S/N)",blancas.name,negras.name );
+        printf("\nQuiere reanudar la partida %s VS %s?(S/N):",blancas.name,negras.name );
         }
         do{
             scanf("%c",&seleccion_sn);
-        }while((seleccion_sn!='S')||(seleccion_sn!='s')||(seleccion_sn!='N')||(seleccion_sn!='n'));
+            switch (seleccion_sn)
+            {
+            case 'S':
+                control_sn=0;
+                break;
+            case 's':
+                control_sn=0;
+                break;
+            case 'N':
+                control_sn=0;
+                break;
+            case 'n':
+                control_sn=0;
+                break;
+            default:
+                control_sn=1;
+                break;
+            }
+        }while(control_sn==1);
         if ((seleccion_sn=='N')||(seleccion_sn=='n')) {
             cargar_partida();
         }else{
@@ -549,7 +626,7 @@ int cargar_partida(){
                 }
             }
             fclose (slot5);
-            reinicio_juego(&contador,tablero);
+            inicio_juego(&contador,tablero,mov_enroque);
         }
     }
     return 1;
@@ -557,45 +634,113 @@ int cargar_partida(){
 
 
 //libreria funciones
-void reinicio_juego(int *contador_movimientos, char tablero[8][8]){
-    int i_0,j_0,i_1,j_1,contador,fin_partida=0,retorno_introduce_coordenadas,retorno_comprobar;
+
+/*
+* piezas[0]->torre00      piezas[16]->torre70
+* piezas[1]->caballo01    piezas[17]->caballo71
+* piezas[2]->alfil02      piezas[18]->alfil72
+* piezas[3]->dama03       piezas[19]->dama73
+* piezas[4]->rey04        piezas[20]->rey74
+* piezas[5]->alfil05      piezas[21]->alfil75
+* piezas[6]->caballo06    piezas[22]->caballo76
+* piezas[7]->torre07      piezas[23]->torre77
+* piezas[8]->peon10       piezas[24]->peon60
+* piezas[9]->peon11       piezas[25]->peon61
+* piezas[10]->peon12      piezas[26]->peon62
+* piezas[11]->peon13      piezas[27]->peon63
+* piezas[12]->peon14      piezas[28]->peon64
+* piezas[13]->peon15      piezas[29]->peon65
+* piezas[14]->peon16      piezas[30]->peon66
+* piezas[15]->peon17      piezas[31]->peon67
+*/
+
+void inicializar_matrices(eval piezas[32]){
+   
+}
+
+void limpiar_pantalla() {
+printf("\x1b[2J");
+/*
+    //necesario incluir stdlib.h
+  #ifdef _WIN32
+    system("cls");
+  #else
+    system("clear");
+  #endif
+*/
+}
+void inicio_juego(int *contador_movimientos, char tablero[8][8], int mov_enroque[6]){
+    int i_0,j_0,i_1,j_1,fin_partida=0,retorno_introduce_coordenadas,retorno_comprobar;
+    
     imprimir_tablero(tablero);
+    
+    
     do{
-        retorno_introduce_coordenadas = introduce_coordenadas(&i_0,&j_0,&i_1,&j_1,&contador,tablero);
+        retorno_introduce_coordenadas = introduce_coordenadas(&i_0,&j_0,&i_1,&j_1,&*contador_movimientos,tablero,mov_enroque);
         printf("\nretorno_introduce_coordenadas=%d\n",retorno_introduce_coordenadas);//test
 
         if ((retorno_introduce_coordenadas)==0) {
 
-            retorno_comprobar = comprobar(&i_0,&j_0,&i_1,&j_1,tablero);
+            retorno_comprobar = comprobar(&i_0,&j_0,&i_1,&j_1,tablero,*&contador_movimientos);
             printf("\nretorno_comprobar=%d\n",retorno_comprobar);//test
 
             if ((retorno_comprobar)==0){
-                mover_pieza(i_0,j_0,i_1,j_1,tablero);
-                
+                if (((tablero[i_1][j_1])=='R')||((tablero[i_1][j_1])=='r'))
+                {
+                    printf("Jaque mate, fin de la partida");
+                    fin_partida=1;
+                }else if ((((tablero[i_0][j_0])=='P')&&((i_0==1)&&(i_1==3)))||(((tablero[i_0][j_0])=='p')&&((i_0==6)&&(i_1==4))))//inicio moviendo dos casillas el peon
+                {
+                    mover_pieza(i_0,j_0,i_1,j_1,tablero,mov_enroque);
+                    captura_alpaso(i_0,j_0,&i_0,&j_0,&i_1,&j_1,&*contador_movimientos,tablero,mov_enroque);
+                }else {
+                mover_pieza(i_0,j_0,i_1,j_1,tablero,mov_enroque);
+                }
             }else{
                 printf("\nIntroduzca un movimiento valido");
-                contador=contador-1;
+                *contador_movimientos=(*contador_movimientos-1);
             }
-        }else{
+        }else {
             printf("\nIntroduzca un movimiento valido");
            
         }
-        
-
     }while(fin_partida==0);
+    menu_principal();
 
 }
 
 
-void mover_pieza(int i_inicial, int j_inicial, int i_final,   int j_final, char tablero[8][8]) {
+void mover_pieza(int i_inicial, int j_inicial, int i_final, int j_final, char tablero[8][8],int mov_enroque[6]) {
+
     tablero[i_final][j_final] = tablero[i_inicial][j_inicial];
     tablero[i_inicial][j_inicial] = '.';
+
+    if ((i_inicial==0)&&(j_inicial==0))//movimientos torre izquierda negra
+    {
+        mov_enroque[0]++;
+    }else if ((i_inicial==0)&&(j_inicial==7))//movimientos torre derecha negra
+    {
+        mov_enroque[1]++;
+    }else if ((i_inicial==7)&&(j_inicial==0))//movimientos torre izquierda blanca
+    {
+        mov_enroque[2]++;
+    }else if ((i_inicial==7)&&(j_inicial==7))//movimientos torre derecha blanca
+    {
+        mov_enroque[3]++;
+    }else if ((i_inicial==7)&&(j_inicial==4))//movimientos rey blanco
+    {
+        mov_enroque[4]++;
+    }else if ((i_inicial==0)&&(j_inicial==4))//movimientos rey negro
+    {
+        mov_enroque[5]++;
+    }
+    
     imprimir_tablero(tablero);
 }
 
-int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_final, int *contador_movimientos, char tablero[8][8]) {
-    int numero_inicial=0,numero_final=0,turno_color=0;
-    char letra_inicial=0,letra_final=0;
+int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_final, int *contador_movimientos, char tablero[8][8], int mov_enroque[6]) {
+    int numero_inicial=0,numero_final=0,turno_color=0,control_sn;
+    char letra_inicial=0,letra_final=0,seleccion_sn;
     
     if ((*contador_movimientos%2)==0) {
         printf("\n\tTurno de piezas NEGRAS\n");
@@ -610,8 +755,30 @@ int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_f
     scanf(" %c",&letra_inicial);
     if (letra_inicial=='m'||letra_inicial=='M')
     {
-        menu_partida(&*i_inicial,&*j_inicial,&*i_final,&*j_final,&*contador_movimientos,tablero);
+        menu_partida(&*i_inicial,&*j_inicial,&*i_final,&*j_final,&*contador_movimientos,tablero,mov_enroque);
     }
+    if (letra_inicial=='E')
+    {
+        do
+        {
+           printf("\nQuieres enrocar?(S/N):");
+           scanf("%c ",&seleccion_sn);
+           if ((seleccion_sn=='S')||(seleccion_sn=='s')) {
+               control_sn=0;
+               enrocar(mov_enroque);
+           }else if ((seleccion_sn=='N')||(seleccion_sn=='n')) {
+              control_sn=0;
+              introduce_coordenadas(&*i_inicial,&*j_inicial,&*i_final,&*j_final,&*contador_movimientos,tablero,mov_enroque);
+           }else {
+               control_sn=1;
+           }
+           
+           
+        } while (control_sn==1);
+        
+        
+    }
+    
     scanf("%d",&numero_inicial);
 
     printf("\nprueba:Coordenadas introducidas %c%d \n",letra_inicial,numero_inicial);//test
@@ -685,6 +852,9 @@ int introduce_coordenadas(int *i_inicial, int *j_inicial, int *i_final, int *j_f
     {
         return 1;
     }
+
+    //
+    
     
     
     printf("\nprueba:Coordenadas introducidas %d%d \n",*i_inicial,*j_inicial);//test
@@ -785,7 +955,7 @@ void imprimir_tablero(char tablero[8][8]){//imprime por pantalla el tablero
     #endif
     
     char margen_derecho[19]="  |8|7|6|5|4|3|2|1";
-    printf("\n\n\n");
+    printf("\n\n");
     printf("\t    ");
     for(i=0;i<8;i++){
         printf("%c ",i+97);
@@ -808,24 +978,6 @@ void imprimir_tablero(char tablero[8][8]){//imprime por pantalla el tablero
                 //SO es linux o macos
 
                 switch (tablero[k][l]){
-                    case 'P':
-                        printf(" %s", "\u265F");
-                        break;
-                    case 'T':
-                        printf(" %s", "\u265C");
-                        break;
-                    case 'C':
-                        printf(" %s", "\u265E");
-                        break;
-                    case 'A':
-                        printf(" %s", "\u265D");
-                        break;
-                    case 'D':
-                        printf(" %s", "\u265B");
-                        break;
-                    case 'R':
-                        printf(" %s", "\u265A");
-                        break;
                     case 'p':
                         printf(" %s", "\u2659");
                         break;
@@ -843,6 +995,24 @@ void imprimir_tablero(char tablero[8][8]){//imprime por pantalla el tablero
                         break;
                     case 'r':
                         printf(" %s", "\u2654");
+                        break;
+                    case 'P':
+                        printf(" %s", "\u265F");
+                        break;
+                    case 'T':
+                        printf(" %s", "\u265C");
+                        break;
+                    case 'C':
+                        printf(" %s", "\u265E");
+                        break;
+                    case 'A':
+                        printf(" %s", "\u265D");
+                        break;
+                    case 'D':
+                        printf(" %s", "\u265B");
+                        break;
+                    case 'R':
+                        printf(" %s", "\u265A");
                         break;
             
                     default:
@@ -865,23 +1035,19 @@ void imprimir_tablero(char tablero[8][8]){//imprime por pantalla el tablero
     for(j=0;j<8;j++){
         printf(" %c",j+97);
     }
-    printf("\n\n\n");
+    printf("\n\n");
 }
 
 void coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tablero[8][8]){
     char opcion_sn=0,opcion_pieza=0;
     int control_seleccion=1;
-    while(control_seleccion==1){
-        printf("\nQuieres promocionar el peon?(S/N):");
-        scanf("%c",&opcion_sn);
-        control_seleccion=1;
-        if ((opcion_sn=='S')||(opcion_sn=='s')) {
-            printf("\nDama: escibe D\nTorre: escribe T\nCaballo: escribe C\nAlfil: escribe A\nElige una de las opciones:");
+    do{
+            printf("\nPromocionar peon:\nDama: escibe D\nTorre: escribe T\nCaballo: escribe C\nAlfil: escribe A\nElige una de las opciones:");
             scanf(" %c",&opcion_pieza);
             switch (opcion_pieza)
             {
                 case 'D':
-                    if (tablero[*i_inicial][*j_inicial]>='a')//peones blancos
+                    if (tablero[*i_inicial][*j_inicial]=='p')//peones blancos
                     {
                         tablero[*i_final][*j_final] = tablero[*i_inicial][*j_inicial];
                         tablero[*i_inicial][*j_inicial] = 'd';
@@ -895,7 +1061,7 @@ void coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tab
                     break;
         
                 case 'T':
-                    if (tablero[*i_inicial][*j_inicial]>='a')//peones blancos
+                    if (tablero[*i_inicial][*j_inicial]=='p')//peones blancos
                     {
                         tablero[*i_final][*j_final] = tablero[*i_inicial][*j_inicial];
                         tablero[*i_inicial][*j_inicial] = 't';
@@ -909,7 +1075,7 @@ void coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tab
                     break;
         
                 case 'C':
-                    if (tablero[*i_inicial][*j_inicial]>='a')//piezas blancas
+                    if (tablero[*i_inicial][*j_inicial]=='p')//piezas blancas
                     {
                         tablero[*i_final][*j_final] = tablero[*i_inicial][*j_inicial];
                         tablero[*i_inicial][*j_inicial] = 'c';
@@ -923,7 +1089,7 @@ void coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tab
                     break;
         
                 case 'A':
-                    if (tablero[*i_inicial][*j_inicial]>='a')//piezas blancas
+                    if (tablero[*i_inicial][*j_inicial]=='p')//piezas blancas
                     {
                         tablero[*i_final][*j_final] = tablero[*i_inicial][*j_inicial];
                         tablero[*i_inicial][*j_inicial] = 'a';
@@ -940,82 +1106,205 @@ void coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tab
                     control_seleccion=1;
                     break;
             }
-
-        }else if ((opcion_sn=='N')||(opcion_sn=='n')){
-            printf("\nHas elegido no promocionar tu peon");
-            control_seleccion=0; 
-        }else{
-            control_seleccion=1;
-        }
-    }
+    }while (control_seleccion==1);     
 }
 
-int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]){ //informa sobre si se puede realizar el movimiento indicado
+void enrocar(int mov_enroque[6]){
+
+
+}
+void captura_alpaso(int i_anterior, int j_anterior, int *i_inicial, int *j_inicial, int *i_final, int *j_final, int *contador_movimientos, char tablero[8][8], int mov_enroque[6])
+{
+    int i_0=*i_inicial,j_0=*j_inicial,i_1=*i_final,j_1=*j_final,fin_partida=0,retorno_introduce_coordenadas,retorno_comprobar;
+
+    printf("captura al paso:\ni_anterior=%d\nj_anterior=%d\n",i_anterior,j_anterior);//test
+
+    do{
+        retorno_introduce_coordenadas = introduce_coordenadas(&i_0,&j_0,&i_1,&j_1,&*contador_movimientos,tablero,mov_enroque);
+        printf("\nretorno_introduce_coordenadas=%d\n",retorno_introduce_coordenadas);//test
+        if ((retorno_introduce_coordenadas)==0) 
+        {
+            if ((((tablero[i_0][j_0])=='P')&&(((i_0==4)&&(i_1==5))&&((j_0==j_1+1)||(j_0==j_1-1))))||(((tablero[i_0][j_0])=='p')&&(((i_0==3)&&(i_1==2))&&((j_0==j_1+1)||(j_0==j_1-1)))))
+            {
+                if ((i_1==(i_anterior-1))&&(j_1==j_anterior))
+                {
+                    tablero[i_1][j_1] = tablero[i_0][j_0];
+                    tablero[i_0][j_0] = '.';
+                    tablero[i_anterior-2][j_anterior]='.';
+                    imprimir_tablero(tablero);
+                    inicio_juego(&*contador_movimientos,tablero,mov_enroque);   
+                }else if ((i_1==(i_anterior+1))&&(j_1==j_anterior))
+                {
+                    tablero[i_1][j_1] = tablero[i_0][j_0];
+                    tablero[i_0][j_0] = '.';
+                    tablero[i_anterior+2][j_anterior]='.';
+                    imprimir_tablero(tablero);
+                    inicio_juego(&*contador_movimientos,tablero,mov_enroque);
+                }else{
+                    printf("\nIntroduzca un movimiento valido");
+                    *contador_movimientos=*contador_movimientos-1;
+                }
+            }
+            retorno_comprobar = comprobar(&i_0,&j_0,&i_1,&j_1,tablero,&*contador_movimientos);
+            printf("\nretorno_comprobar=%d\n",retorno_comprobar);//test
+            if ((retorno_comprobar)==0){
+                if (((tablero[i_1][j_1])=='R')||((tablero[i_1][j_1])=='r'))
+                {
+                    printf("Jaque mate, fin de la partida");
+                    fin_partida=1;
+                }else {
+                mover_pieza(i_0,j_0,i_1,j_1,tablero,mov_enroque);
+                inicio_juego(&*contador_movimientos,tablero,mov_enroque);
+                }
+            }else{
+                printf("\nIntroduzca un movimiento valido");
+                *contador_movimientos=*contador_movimientos-1;
+            }
+        }else {
+            printf("\nIntroduzca un movimiento valido");
+           
+        }
+    }while(fin_partida==0);
+    menu_principal();
+}
+
+void matrices_evaluacion(int blancas_defensa[8][8],int negras_defensa[8][8]){
+    //inicializar_matrices(piezas);
+
+    
+}
+
+int comprobar(int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8],int *contador_movimientos){ //informa sobre si se puede realizar el movimiento indicado
     int i_0=*i_inicial, j_0=*j_inicial, i_1=*i_final, j_1=*j_final;
-    int retorno_peones,retorno_caballos,retorno_alfiles,retorno_torres,retorno_reyes,retorno_damas;
-    
-    //int i,j;//para test imprimir matriz
-    
-    /*  //test entrada de datos
-    printf("\ni_inicial=%d\nj_inicial=%d\ni_final=%d\nj_final=%d\n",i_0,j_0,i_1,j_1);
-    printf("\ni_inicial=%d\nj_inicial=%d\ni_final=%d\nj_final=%d\n",*i_inicial,*j_inicial,*i_final,*j_final);
-    printf("\npieza inicial=%c\n",tablero[i_0][j_0]);
-    */
-    
-    /* //test matriz tablero
-    for(i=0;i<8;i++){
-        printf("\t\n");
-        for(j=0;j<8;j++){
-            printf(" %c",tablero[i][j]);
+    int retorno_peones,retorno_caballos,retorno_alfiles,retorno_torres,retorno_reyes,retorno_damas,retorno_comprobar,i,j,k;
+    int eval_blancas[8][8],eval_negras[8][8],eval_aux[8][8];
+    eval piezas[32];
+    if(*contador_movimientos==1){//inicializacion matrices de evaluacion
+        for (k=0; k<32; k++){
+            for(i=0;i<8;i++){
+                for(j=0;j<8;j++){
+                    eval_blancas[i][j]=0;
+                }
+            }
+        }
+        for (k=0; k<32; k++){
+            for(i=0;i<8;i++){
+                for(j=0;j<8;j++){
+                    eval_negras[i][j]=0;
+                }
+            }
+        }
+        for (k=0; k<32; k++){
+            for(i=0;i<8;i++){
+                for(j=0;j<8;j++){
+                    piezas[k].matriz[i][j]=0;
+                }
+            }
+        }
+        piezas[1].matriz[2][0]=1;//caballo01
+        piezas[1].matriz[2][2]=1;
+        piezas[6].matriz[2][5]=1;//caballo06
+        piezas[6].matriz[2][7]=1;
+        piezas[8].matriz[2][1]=1;//peon11
+        piezas[9].matriz[2][2]=1;
+        piezas[10].matriz[2][1]=1;//peon12
+        piezas[10].matriz[2][3]=1;
+        piezas[11].matriz[2][2]=1;//peon13 
+        piezas[11].matriz[2][4]=1;
+        piezas[12].matriz[2][3]=1;//peon14
+        piezas[12].matriz[2][5]=1;
+        piezas[13].matriz[2][4]=1;//peon15
+        piezas[13].matriz[2][6]=1;
+        piezas[14].matriz[2][5]=1;//peon16 
+        piezas[14].matriz[2][7]=1;
+        piezas[15].matriz[2][6]=1;//peon17
+
+        piezas[17].matriz[5][0]=1;//caballo71
+        piezas[17].matriz[5][2]=1;
+        piezas[22].matriz[5][5]=1;//caballo76
+        piezas[22].matriz[5][7]=1;
+        piezas[24].matriz[5][1]=1;//peon60
+        piezas[25].matriz[5][0]=1;//peon61
+        piezas[25].matriz[5][2]=1;
+        piezas[26].matriz[5][1]=1;//peon62
+        piezas[26].matriz[5][3]=1;
+        piezas[27].matriz[5][2]=1;//peon63
+        piezas[27].matriz[5][4]=1;
+        piezas[28].matriz[5][3]=1;//peon64
+        piezas[28].matriz[5][5]=1;
+        piezas[29].matriz[5][4]=1;//peon65
+        piezas[29].matriz[5][6]=1;
+        piezas[30].matriz[5][5]=1;//peon66
+        piezas[30].matriz[5][7]=1;
+        piezas[31].matriz[5][6]=1;//peon67
+
+        for (k=16;k<32;k++){
+            for(i=0;i<8;i++){
+                for(j=0;j<8;j++){
+                    eval_blancas[i][j]=eval_blancas[i][j]+piezas[k].matriz[i][j];
+                    if ((eval_blancas[i][j])>1)
+                    {
+                        eval_blancas[i][j]=1;
+                    }
+                }
+            }
+        }
+
+        for (k=0;k<16;k++){
+            for(i=0;i<8;i++){
+                for(j=0;j<8;j++){
+                    eval_negras[i][j]=eval_negras[i][j]+piezas[k].matriz[i][j];
+                    if ((eval_negras[i][j])>1)
+                    {
+                        eval_negras[i][j]=1;
+                    }
+                }
+            }
         }
     }
-    */
+    
+    for (k=0; k<32; k++){
+            for(i=0;i<8;i++){
+                for(j=0;j<8;j++){
+                    eval_aux[i][j]=0;
+                }
+            }
+        }
+   
     
     if (((tablero[*i_inicial][*j_inicial])=='P')||((tablero[*i_inicial][*j_inicial])=='p')) {
-        retorno_peones=peones(&i_0,&j_0,&i_1,&j_1,tablero);
-        printf("\nretorno_peones=%d",retorno_peones);
-        return retorno_peones;
+        retorno_peones=peones(&i_0,&j_0,&i_1,&j_1,tablero,eval_aux);
 
     }else if (((tablero[*i_inicial][*j_inicial])=='C')||((tablero[*i_inicial][*j_inicial])=='c')) {
-        retorno_caballos=caballos(&i_0,&j_0,&i_1,&j_1,tablero);
-        printf("\nretorno_caballos=%d",retorno_caballos);
-
-        return caballos(&i_0,&j_0,&i_1,&j_1,tablero);
+        retorno_caballos=caballos(&i_0,&j_0,&i_1,&j_1,tablero,eval_aux);
 
     }else if (((tablero[*i_inicial][*j_inicial])=='A')||((tablero[*i_inicial][*j_inicial])=='a')) {
-        retorno_alfiles=alfiles(&i_0,&j_0,&i_1,&j_1,tablero);
-        printf("\nretorno_alfiles=%d",retorno_alfiles);
-
-        return alfiles(&i_0,&j_0,&i_1,&j_1,tablero);
+        retorno_alfiles=alfiles(&i_0,&j_0,&i_1,&j_1,tablero,eval_aux);
 
     }else if (((tablero[*i_inicial][*j_inicial])=='T')||((tablero[*i_inicial][*j_inicial])=='t')) {
-        retorno_torres=torres(&i_0,&j_0,&i_1,&j_1,tablero);
-        printf("\nretorno_torres=%d",retorno_torres);
-
-        return torres(&i_0,&j_0,&i_1,&j_1,tablero);
+        retorno_torres=torres(&i_0,&j_0,&i_1,&j_1,tablero,eval_aux);
 
     }else if (((tablero[*i_inicial][*j_inicial])=='R')||((tablero[*i_inicial][*j_inicial])=='r')) {
-        retorno_reyes=reyes(&i_0,&j_0,&i_1,&j_1,tablero);
-        printf("\nretorno_reyes=%d",retorno_reyes);
-
-        return reyes(&i_0,&j_0,&i_1,&j_1,tablero);
+        retorno_reyes=reyes(&i_0,&j_0,&i_1,&j_1,tablero,eval_aux);
 
     }else if (((tablero[*i_inicial][*j_inicial])=='D')||((tablero[*i_inicial][*j_inicial])=='d')) {
-        retorno_damas=damas(&i_0,&j_0,&i_1,&j_1,tablero);
-        printf("\nretorno_damas=%d",retorno_damas);
-
-        return damas(&i_0,&j_0,&i_1,&j_1,tablero);
+        retorno_damas=damas(&i_0,&j_0,&i_1,&j_1,tablero,eval_aux);
 
     }else{
     return 1;
     }
+    if ((retorno_peones==0)||(retorno_caballos==0)||(retorno_alfiles==0)||(retorno_torres==0)||(retorno_reyes==0)||(retorno_damas==0))
+    {
+        retorno_comprobar=0;
+    }else{
+        return 1;
+    }
+    printf("Retorno_comprobar=%d",retorno_comprobar);
+    return retorno_comprobar;
 }
 
-int peones (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]) {
-    
-    printf("\ni_inicial=%d\nj_inicial=%d\ni_final=%d\nj_final=%d\n",*i_inicial,*j_inicial,*i_final,*j_final);
-    
-    
+int peones (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8],int eval_aux[8][8]) {
+
     if ((tablero[*i_inicial][*j_inicial])=='P') { //peon negras 4 movimientos posibles
         
         if (((*i_final)==(*i_inicial+1)) && ((*j_final)==(*j_inicial))) { //avanza 1
@@ -1023,24 +1312,38 @@ int peones (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
                 if(*i_final==7){
                     coronar(&*i_inicial, &*j_inicial, &*i_final, &*j_final, tablero);
                 }
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial+2)) && ((*j_final)==(*j_inicial))) { //avanza 2
             if ((*i_inicial==1)&&((tablero[*i_final][*j_final])=='.')) {//desde la fila 1 y que la posicion este vacia
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial+1)) && ((*j_final)==(*j_inicial-1))) { //come hacia su derecha i_inicial+1 j_inicial-1
             if ((*i_final<8)&&((tablero[*i_final][*j_final])>='a')&&(0<=(*j_final))) {//limites del tablero y pieza en minusculas
+                if(*i_final==7){
+                    coronar(&*i_inicial, &*j_inicial, &*i_final, &*j_final, tablero);
+                }
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial+1)) && ((*j_final)==(*j_inicial+1))) { //come hacia su izquierda i_inicial+1 j_inicial+1
             if ((*i_final<8)&&((tablero[*i_final][*j_final])>='a')&&(*j_final<8)) { //limites tablero y pieza en minusculas
+                if(*i_final==7){
+                    coronar(&*i_inicial, &*j_inicial, &*i_final, &*j_final, tablero);
+                }
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
@@ -1049,33 +1352,46 @@ int peones (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
             return 1;
         }
     }
-    
-    
+
     if ((tablero[*i_inicial][*j_inicial])=='p') {//peon blancas
-        
+
         if (((*i_final)==(*i_inicial-1)) && ((*j_final)==(*j_inicial))) {//avanza 1 i_inicial-1
             if ((*i_final>=0)&&((tablero[*i_final][*j_final])=='.')) {//limites del tablero y que la posicion este vacia
              if(*i_final==0){
                     coronar(&*i_inicial, &*j_inicial, &*i_final, &*j_final, tablero);
                 }
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial-2)) && ((*j_final)==(*j_inicial))) {
             if ((*i_inicial==6)&&((tablero[*i_final][*j_final])=='.')) {
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial-1)) && ((*j_final)==(*j_inicial-1))) {
             if ((*i_final>=0)&&((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')&&(0<=(*j_final))) {//limites y contiene mayuscula
+                if(*i_final==0){
+                    coronar(&*i_inicial, &*j_inicial, &*i_final, &*j_final, tablero);
+                }
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial-1)) && ((*j_final)==(*j_inicial+1))) {
             if ((*i_final>=0)&&((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')&&(*j_final<8)) { // limites y contiene mayuscula
+                if(*i_final==0){
+                    coronar(&*i_inicial, &*j_inicial, &*i_final, &*j_final, tablero);
+                }
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
@@ -1087,53 +1403,118 @@ int peones (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
     return 1;
 }
 
-int caballos (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]) {
+int caballos (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8],int eval_aux[8][8]) {
+
     if ((tablero[*i_inicial][*j_inicial])=='C') {//caballo negras 8 posibles posiciones
             
         if (((*i_final)==(*i_inicial+2))&&((*j_final)==(*j_inicial-1))) {//(+2,-1)
             if ((*i_final<8)&&(*j_final>=0)&&(((tablero[*i_final][*j_final])>='a')||((tablero[*i_final][*j_final])=='.'))) {
+                eval_aux[*i_final+2][*j_final-1]=1;
+                eval_aux[*i_final+2][*j_final+1]=1;
+                eval_aux[*i_final+1][*j_final-2]=1;
+                eval_aux[*i_final+1][*j_final+2]=1;
+                eval_aux[*i_final-1][*j_final-2]=1;
+                eval_aux[*i_final-1][*j_final+2]=1;
+                eval_aux[*i_final-2][*j_final-1]=1;
+                eval_aux[*i_final-2][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial+2))&&((*j_final)==(*j_inicial+1))) {//(+2,+1)
             if ((*i_final<8)&&(*j_final<8)&&(((tablero[*i_final][*j_final])>='a')||((tablero[*i_final][*j_final])=='.'))) {
+                eval_aux[*i_final+2][*j_final-1]=1;
+                eval_aux[*i_final+2][*j_final+1]=1;
+                eval_aux[*i_final+1][*j_final-2]=1;
+                eval_aux[*i_final+1][*j_final+2]=1;
+                eval_aux[*i_final-1][*j_final-2]=1;
+                eval_aux[*i_final-1][*j_final+2]=1;
+                eval_aux[*i_final-2][*j_final-1]=1;
+                eval_aux[*i_final-2][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial+1))&&((*j_final)==(*j_inicial-2))) {//(+1,-2)
             if ((*i_final<8)&&(*j_final>=0)&&(((tablero[*i_final][*j_final])>='a')||((tablero[*i_final][*j_final])=='.'))) {
+                eval_aux[*i_final+2][*j_final-1]=1;
+                eval_aux[*i_final+2][*j_final+1]=1;
+                eval_aux[*i_final+1][*j_final-2]=1;
+                eval_aux[*i_final+1][*j_final+2]=1;
+                eval_aux[*i_final-1][*j_final-2]=1;
+                eval_aux[*i_final-1][*j_final+2]=1;
+                eval_aux[*i_final-2][*j_final-1]=1;
+                eval_aux[*i_final-2][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial-1))&&((*j_final)==(*j_inicial-2))) {//(-1,-2)
             if ((*i_final>=0)&&(*j_final>=0)&&(((tablero[*i_final][*j_final])>='a')||((tablero[*i_final][*j_final])=='.'))) {
+                eval_aux[*i_final+2][*j_final-1]=1;
+                eval_aux[*i_final+2][*j_final+1]=1;
+                eval_aux[*i_final+1][*j_final-2]=1;
+                eval_aux[*i_final+1][*j_final+2]=1;
+                eval_aux[*i_final-1][*j_final-2]=1;
+                eval_aux[*i_final-1][*j_final+2]=1;
+                eval_aux[*i_final-2][*j_final-1]=1;
+                eval_aux[*i_final-2][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial+1))&&((*j_final)==(*j_inicial+2))) {//(+1,+2)
             if ((*i_final<8)&&(*j_final<8)&&(((tablero[*i_final][*j_final])>='a')||((tablero[*i_final][*j_final])=='.'))) {
+                eval_aux[*i_final+2][*j_final-1]=1;
+                eval_aux[*i_final+2][*j_final+1]=1;
+                eval_aux[*i_final+1][*j_final-2]=1;
+                eval_aux[*i_final+1][*j_final+2]=1;
+                eval_aux[*i_final-1][*j_final-2]=1;
+                eval_aux[*i_final-1][*j_final+2]=1;
+                eval_aux[*i_final-2][*j_final-1]=1;
+                eval_aux[*i_final-2][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial-1))&&((*j_final)==(*j_inicial+2))) {//(-1,+2)
             if ((*i_final>=0)&&(*j_final<8)&&(((tablero[*i_final][*j_final])>='a')||((tablero[*i_final][*j_final])=='.'))) {
+                eval_aux[*i_final+2][*j_final-1]=1;
+                eval_aux[*i_final+2][*j_final+1]=1;
+                eval_aux[*i_final+1][*j_final-2]=1;
+                eval_aux[*i_final+1][*j_final+2]=1;
+                eval_aux[*i_final-1][*j_final-2]=1;
+                eval_aux[*i_final-1][*j_final+2]=1;
+                eval_aux[*i_final-2][*j_final-1]=1;
+                eval_aux[*i_final-2][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial-2))&&((*j_final)==(*j_inicial-1))) {//(-2,-1)
             if ((*i_final>=0)&&(*j_final>=0)&&(((tablero[*i_final][*j_final])>='a')||((tablero[*i_final][*j_final])=='.'))) {
+                eval_aux[*i_final+2][*j_final-1]=1;
+                eval_aux[*i_final+2][*j_final+1]=1;
+                eval_aux[*i_final+1][*j_final-2]=1;
+                eval_aux[*i_final+1][*j_final+2]=1;
+                eval_aux[*i_final-1][*j_final-2]=1;
+                eval_aux[*i_final-1][*j_final+2]=1;
+                eval_aux[*i_final-2][*j_final-1]=1;
+                eval_aux[*i_final-2][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial-2))&&((*j_final)==(*j_inicial+1))) {//(-2,+1)
             if ((*i_final>=0)&&(*j_final<8)&&(((tablero[*i_final][*j_final])>='a')||((tablero[*i_final][*j_final])=='.'))) {
+                eval_aux[*i_final+2][*j_final-1]=1;
+                eval_aux[*i_final+2][*j_final+1]=1;
+                eval_aux[*i_final+1][*j_final-2]=1;
+                eval_aux[*i_final+1][*j_final+2]=1;
+                eval_aux[*i_final-1][*j_final-2]=1;
+                eval_aux[*i_final-1][*j_final+2]=1;
+                eval_aux[*i_final-2][*j_final-1]=1;
+                eval_aux[*i_final-2][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
@@ -1143,54 +1524,117 @@ int caballos (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
         }
         
     }
-    
     
     if ((tablero[*i_inicial][*j_inicial])=='c') {//caballo blancas
         
         if (((*i_final)==(*i_inicial+2))&&((*j_final)==(*j_inicial-1))) {//(+2,-1)
             if (((*i_final<8)&&(*j_final>=0)&&(((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')))||((tablero[*i_final][*j_final])=='.')) {
+                eval_aux[*i_final+2][*j_final-1]=1;
+                eval_aux[*i_final+2][*j_final+1]=1;
+                eval_aux[*i_final+1][*j_final-2]=1;
+                eval_aux[*i_final+1][*j_final+2]=1;
+                eval_aux[*i_final-1][*j_final-2]=1;
+                eval_aux[*i_final-1][*j_final+2]=1;
+                eval_aux[*i_final-2][*j_final-1]=1;
+                eval_aux[*i_final-2][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial+2))&&((*j_final)==(*j_inicial+1))) {//(+2,+1)
             if (((*i_final<8)&&(*j_final<8)&&(((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')))||((tablero[*i_final][*j_final])=='.')) {
+                eval_aux[*i_final+2][*j_final-1]=1;
+                eval_aux[*i_final+2][*j_final+1]=1;
+                eval_aux[*i_final+1][*j_final-2]=1;
+                eval_aux[*i_final+1][*j_final+2]=1;
+                eval_aux[*i_final-1][*j_final-2]=1;
+                eval_aux[*i_final-1][*j_final+2]=1;
+                eval_aux[*i_final-2][*j_final-1]=1;
+                eval_aux[*i_final-2][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial+1))&&((*j_final)==(*j_inicial-2))) {//(+1,-2)
             if (((*i_final<8)&&(*j_final>=0)&&(((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')))||((tablero[*i_final][*j_final])=='.')) {
+                eval_aux[*i_final+2][*j_final-1]=1;
+                eval_aux[*i_final+2][*j_final+1]=1;
+                eval_aux[*i_final+1][*j_final-2]=1;
+                eval_aux[*i_final+1][*j_final+2]=1;
+                eval_aux[*i_final-1][*j_final-2]=1;
+                eval_aux[*i_final-1][*j_final+2]=1;
+                eval_aux[*i_final-2][*j_final-1]=1;
+                eval_aux[*i_final-2][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial-1))&&((*j_final)==(*j_inicial-2))) {//(-1,-2)
             if (((*i_final>=0)&&(*j_final>=0)&&(((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')))||((tablero[*i_final][*j_final])=='.')) {
+                eval_aux[*i_final+2][*j_final-1]=1;
+                eval_aux[*i_final+2][*j_final+1]=1;
+                eval_aux[*i_final+1][*j_final-2]=1;
+                eval_aux[*i_final+1][*j_final+2]=1;
+                eval_aux[*i_final-1][*j_final-2]=1;
+                eval_aux[*i_final-1][*j_final+2]=1;
+                eval_aux[*i_final-2][*j_final-1]=1;
+                eval_aux[*i_final-2][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial+1))&&((*j_final)==(*j_inicial+2))) {//(+1,+2)
             if (((*i_final<8)&&(*j_final<8)&&(((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')))||((tablero[*i_final][*j_final])=='.')) {
+                eval_aux[*i_final+2][*j_final-1]=1;
+                eval_aux[*i_final+2][*j_final+1]=1;
+                eval_aux[*i_final+1][*j_final-2]=1;
+                eval_aux[*i_final+1][*j_final+2]=1;
+                eval_aux[*i_final-1][*j_final-2]=1;
+                eval_aux[*i_final-1][*j_final+2]=1;
+                eval_aux[*i_final-2][*j_final-1]=1;
+                eval_aux[*i_final-2][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial-1))&&((*j_final)==(*j_inicial+2))) {//(-1,+2)
             if (((*i_final>=0)&&(*j_final<8)&&(((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')))||((tablero[*i_final][*j_final])=='.')) {
+                eval_aux[*i_final+2][*j_final-1]=1;
+                eval_aux[*i_final+2][*j_final+1]=1;
+                eval_aux[*i_final+1][*j_final-2]=1;
+                eval_aux[*i_final+1][*j_final+2]=1;
+                eval_aux[*i_final-1][*j_final-2]=1;
+                eval_aux[*i_final-1][*j_final+2]=1;
+                eval_aux[*i_final-2][*j_final-1]=1;
+                eval_aux[*i_final-2][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial-2))&&((*j_final)==(*j_inicial-1))) {//(-2,-1)
             if (((*i_final>=0)&&(*j_final>=0)&&(((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')))||((tablero[*i_final][*j_final])=='.')) {
+                eval_aux[*i_final+2][*j_final-1]=1;
+                eval_aux[*i_final+2][*j_final+1]=1;
+                eval_aux[*i_final+1][*j_final-2]=1;
+                eval_aux[*i_final+1][*j_final+2]=1;
+                eval_aux[*i_final-1][*j_final-2]=1;
+                eval_aux[*i_final-1][*j_final+2]=1;
+                eval_aux[*i_final-2][*j_final-1]=1;
+                eval_aux[*i_final-2][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }else if (((*i_final)==(*i_inicial-2))&&((*j_final)==(*j_inicial+1))) {//(-2,+1)
             if (((*i_final>=0)&&(*j_final<8)&&(((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')))||((tablero[*i_final][*j_final])=='.')) {
+                eval_aux[*i_final+2][*j_final-1]=1;
+                eval_aux[*i_final+2][*j_final+1]=1;
+                eval_aux[*i_final+1][*j_final-2]=1;
+                eval_aux[*i_final+1][*j_final+2]=1;
+                eval_aux[*i_final-1][*j_final-2]=1;
+                eval_aux[*i_final-1][*j_final+2]=1;
+                eval_aux[*i_final-2][*j_final-1]=1;
+                eval_aux[*i_final-2][*j_final+1]=1;
                 return 0;
             }else{
                 return 1;
@@ -1202,57 +1646,103 @@ int caballos (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char t
     return 1;
 }
 
-int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]) {
+int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8],int eval_aux[8][8]) {
     int comprobar_diagonales=0,i,j;
     
     if ((tablero[*i_inicial][*j_inicial])=='A') { //alfil negras
         if ((tablero[*i_final][*j_final]>='a')||(tablero[*i_final][*j_final]=='.')) {
             
             if (((*j_final)>(*j_inicial))&&((*i_final)>(*i_inicial))) {
-                for (j=*j_inicial+1; j<(*j_final); j++) {
-                    for (i=*i_inicial+1; j<(*i_final); i++) {
+                for (j=(*j_inicial+1); j<(*j_final); j++) {
+                    for (i=(*i_inicial+1); j<(*i_final); i++) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
                     }
                 }
-                return comprobar_diagonales;
             }else if (((*j_final)>(*j_inicial))&&((*i_final)<(*i_inicial))) {
-                for (j=*i_inicial+1; j<(*j_final); j++) {
-                    for (i=*i_inicial-1; j>(*j_final); i--) {
+                for (j=(*i_inicial+1); j<(*j_final); j++) {
+                    for (i=(*i_inicial-1); j>(*j_final); i--) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
                     }
                 }
-                return comprobar_diagonales;
             }else if (((*j_final)<(*j_inicial))&&((*i_final)<(*i_inicial))) {
-                for (j=*j_inicial-1; j>(*j_final); j--) {
-                    for (i=*i_inicial-1; j>(*i_final); i--) {
+                for (j=(*j_inicial-1); j>(*j_final); j--) {
+                    for (i=(*i_inicial-1); j>(*i_final); i--) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
                     }
                 }
-                return comprobar_diagonales;
             }else if (((*j_final)<(*j_inicial))&&((*i_final)>(*i_inicial))) {
-                for (j=*j_inicial-1; j>(*j_final); j--) {
-                    for (i=*i_inicial+1; j<(*i_final); i++) {
+                for (j=(*j_inicial-1); j>(*j_final); j--) {
+                    for (i=(*i_inicial+1); j<(*i_final); i++) {
                         if ((tablero[i][j])!='.') {
                             comprobar_diagonales=1;
                         }
                     }
                 }
-                return comprobar_diagonales;
             }else{
                 return 1;
             }
         }else{
             return 1;
         }
+        if (comprobar_diagonales==0){
+            for (j=(*j_final+1);j<8;j++){
+                for (i=(*i_final+1);j<8;i++){
+                    do{
+                        if ((i<8)&&(j<8))
+                        {
+                            eval_aux[i][j]=1;
+                        }
+                    }while(tablero[i][j]=='.');
+                }       
+            } 
+      
+            for (j=(*j_final+1);j<8;j++){
+                for (i=(*i_final-1);j>=0;i--){
+                    do{
+                        if ((i<8)&&(j<8))
+                        {
+                            eval_aux[i][j]=1;
+                        }
+                    }while(tablero[i][j]=='.');
+                }       
+            } 
+        
+            for (j=(*j_final-1);j>=0;j--){
+                for (i=(*i_final-1);j>=0;i--){
+                    do{
+                        if ((i<8)&&(j<8))
+                        {
+                            eval_aux[i][j]=1;
+                        }
+                    }while(tablero[i][j]=='.');
+                }       
+            } 
+        
+            for (j=(*j_final-1);j>=0;j--){
+                for (i=(*i_final+1);j<8;i++){
+                    do{
+                        if ((i<8)&&(j<8))
+                        {
+                            eval_aux[i][j]=1;
+                        }
+                    }while(tablero[i][j]=='.');
+                }       
+            } 
+        }
+        
+        printf("retorno alfiles=%d",comprobar_diagonales);
+        return comprobar_diagonales;
+
     }
 
     if ((tablero[*i_inicial][*j_inicial])=='a') { //alfil blancas
+
         if (((tablero[*i_final][*j_final]>='A')&&(tablero[*i_final][*j_final]<='T'))||(tablero[*i_final][*j_final]=='.')) {
             
             if (((*j_final)>(*j_inicial))&&((*i_final)>(*i_inicial))) {
@@ -1263,7 +1753,6 @@ int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char ta
                         }
                     }
                 }
-                return comprobar_diagonales;
             }else if (((*j_final)>(*j_inicial))&&((*i_final)<(*i_inicial))) {
                 for (j=*j_inicial+1; j<(*j_final); j++) {
                     for (i=*i_inicial-1; j>(*i_final); i--) {
@@ -1272,7 +1761,6 @@ int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char ta
                         }
                     }
                 }
-                return comprobar_diagonales;
             }else if (((*j_final)<(*j_inicial))&&((*i_final)<(*i_inicial))) {
                 for (j=*j_inicial-1; j>(*j_final); j--) {
                     for (i=*i_inicial-1; j>(*i_final); i--) {
@@ -1281,7 +1769,6 @@ int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char ta
                         }
                     }
                 }
-                return comprobar_diagonales;
             }else if (((*j_final)<(*j_inicial))&&((*i_final)>(*i_inicial))) {
                 for (j=*j_inicial-1; j>(*i_final); j--) {
                     for (i=*i_inicial+1; j<(*i_final); i++) {
@@ -1290,18 +1777,63 @@ int alfiles (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char ta
                         }
                     }
                 }
-                return comprobar_diagonales;
             }else{
                 return 1;
             }
         }else{
             return 1;
         }
+        if (comprobar_diagonales==0){
+            for (j=(*j_final+1);j<8;j++){
+                for (i=(*i_final+1);j<8;i++){
+                    do{
+                        if ((i<8)&&(j<8))
+                        {
+                            eval_aux[i][j]=1;
+                        }
+                    }while(tablero[i][j]=='.');
+                }       
+            } 
+        
+            for (j=(*j_final+1);j<8;j++){
+                for (i=(*i_final-1);j>=0;i--){
+                    do{
+                        if ((i<8)&&(j<8))
+                        {
+                            eval_aux[i][j]=1;
+                        }
+                    }while(tablero[i][j]=='.');
+                }       
+            } 
+        
+            for (j=(*j_final-1);j>=0;j--){
+                for (i=(*i_final-1);j>=0;i--){
+                    do{
+                        if ((i<8)&&(j<8))
+                        {
+                            eval_aux[i][j]=1;
+                        }
+                    }while(tablero[i][j]=='.');
+                }       
+            } 
+        
+            for (j=(*j_final-1);j>=0;j--){
+                for (i=(*i_final+1);j<8;i++){
+                    do{
+                        if ((i<8)&&(j<8))
+                        {
+                            eval_aux[i][j]=1;
+                        }
+                    }while(tablero[i][j]=='.');
+                }       
+            } 
+        }
+        return comprobar_diagonales;
     }
     return 1;
 }
 
-int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]) {
+int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8],int eval_aux[8][8]) {
     
     int i,comprobar_ejes=0;
     
@@ -1314,31 +1846,65 @@ int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
                         comprobar_ejes=1;
                     }
                 }
-                return comprobar_ejes;
+               
             }else if (((*i_final)<(*i_inicial))&&((*j_final)==(*j_inicial))) {
                 for (i=(*i_inicial-1); i>(*i_final); i--) {
                     if ((tablero[i][*j_inicial])!='.') {
                         comprobar_ejes=1;
                     }
                 }
-                return comprobar_ejes;
+                
             }else if (((*j_final)>(*j_inicial))&&((*i_final)==(*i_inicial))) {
                 for (i=(*j_inicial+1); i<(*j_final); i++) {
                     if ((tablero[*i_inicial][i])!='.') {
                         comprobar_ejes=1;
                     }
                 }
-                return comprobar_ejes;
+                
             }else if (((*j_final)<(*j_inicial))&&((*i_final)==(*i_inicial))) {
                 for (i=(*j_inicial-1); i>(*j_final); i--) {
                     if ((tablero[*i_inicial][i])!='.') {
                         comprobar_ejes=1;
                     }
                 }
-                return comprobar_ejes;
+                
             }else{
                 return 1;
             }
+            if(comprobar_ejes==0){
+            if ((8)>(*i_final)) {
+                for (i=(*i_final+1); i<8; i++) {
+                    while((tablero[i][*j_final])=='.') {
+                        eval_aux[i][*j_final]=1;
+                    }
+                }
+              
+            }
+            if ((0)<=(*i_final)) {
+                for (i=(*i_final-1); i>=(0); i--) {
+                    while((tablero[i][*j_final])=='.') {
+                        eval_aux[i][*j_final]=1;
+                    }
+                }
+            }
+            if ((8)>(*j_final)) {
+                for (i=(*j_final+1); i<8; i++) {
+                    while ((tablero[*i_final][i])=='.') {
+                        eval_aux[*i_final][i]=1;
+                    }
+                }
+                
+            }
+            if ((0)<=(*j_final)) {
+                for (i=(*j_final-1); i>=(0); i--) {
+                    while ((tablero[*i_final][i])=='.') {
+                        eval_aux[*i_final][i]=1;
+                    }
+                }
+                
+            }
+            }
+            return comprobar_ejes;
         }else{
             return 1;
         }
@@ -1346,6 +1912,7 @@ int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
     }
 
     if ((tablero[*i_inicial][*j_inicial])=='t') { //torre blancas
+
         if (((tablero[*i_final][*j_final]>='A')&&(tablero[*i_final][*j_final]<='T'))||(tablero[*i_final][*j_final]=='.')) {
             
             if (((*i_final)>(*i_inicial))&&((*j_final)==(*j_inicial))) {
@@ -1354,7 +1921,7 @@ int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
                         comprobar_ejes=1;
                     }
                 }
-                return comprobar_ejes;
+                
             }
             
             if (((*i_final)<(*i_inicial))&&((*j_final)==(*j_inicial))) {
@@ -1363,7 +1930,7 @@ int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
                         comprobar_ejes=1;
                     }
                 }
-                return comprobar_ejes;
+                
             }
             
             if (((*j_final)>(*j_inicial))&&((*i_final)==(*i_inicial))) {
@@ -1372,7 +1939,7 @@ int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
                         comprobar_ejes=1;
                     }
                 }
-                return comprobar_ejes;
+                
             }
             
             if (((*j_final)<(*j_inicial))&&((*i_final)==(*i_inicial))) {
@@ -1381,8 +1948,43 @@ int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
                         comprobar_ejes=1;
                     }
                 }
-                return comprobar_ejes;
+                
             }
+
+            if(comprobar_ejes==0){
+            if ((8)>(*i_final)) {
+                for (i=(*i_final+1); i<8; i++) {
+                    while((tablero[i][*j_final])=='.') {
+                        eval_aux[i][*j_final]=1;
+                    }
+                }
+              
+            }
+            if ((0)<=(*i_final)) {
+                for (i=(*i_final-1); i>=(0); i--) {
+                    while((tablero[i][*j_final])=='.') {
+                        eval_aux[i][*j_final]=1;
+                    }
+                }
+            }
+            if ((8)>(*j_final)) {
+                for (i=(*j_final+1); i<8; i++) {
+                    while ((tablero[*i_final][i])=='.') {
+                        eval_aux[*i_final][i]=1;
+                    }
+                }
+                
+            }
+            if ((0)<=(*j_final)) {
+                for (i=(*j_final-1); i>=(0); i--) {
+                    while ((tablero[*i_final][i])=='.') {
+                        eval_aux[*i_final][i]=1;
+                    }
+                }
+                
+            }
+            }
+            return comprobar_ejes;
         }else{
             return 1;
         }
@@ -1390,12 +1992,21 @@ int torres (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tab
     return 1;
 }
 
-int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]) {
+int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8],int eval_aux[8][8]) {
     
     if ((tablero[*i_inicial][*j_inicial])=='R') { //rey negras
         
         if (((*i_final)==(*i_inicial+1)) && ((*j_final)==(*j_inicial+1))) {//(+1,+1)
             if ((*i_final<8)&&(*j_final<8)&&(((tablero[*i_final][*j_final])>='a')||((tablero[*i_final][*j_final])=='.'))) {
+                eval_aux[*i_final+1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final]=1;
+                eval_aux[*i_final-1][*j_final]=1;
+                eval_aux[*i_final][*j_final+1]=1;
+                eval_aux[*i_final][*j_final-1]=1;
+
                 return 0;
             }else{
                 return 1;
@@ -1404,6 +2015,14 @@ int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
         
         if (((*i_final)==(*i_inicial-1)) && ((*j_final)==(*j_inicial+1))) {//(-1,+1)
             if ((*i_final>=0)&&(*j_final<8)&&(((tablero[*i_final][*j_final])>='a')||((tablero[*i_final][*j_final])=='.'))) {
+                eval_aux[*i_final+1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final]=1;
+                eval_aux[*i_final-1][*j_final]=1;
+                eval_aux[*i_final][*j_final+1]=1;
+                eval_aux[*i_final][*j_final-1]=1;
                 return 0;
             }else{
                 return 1;
@@ -1412,6 +2031,14 @@ int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
 
         if (((*i_final)==(*i_inicial-1)) && ((*j_final)==(*j_inicial-1))) {//(-1,-1)
             if ((*i_final>=0)&&(*j_final>=0)&&(((tablero[*i_final][*j_final])>='a')||((tablero[*i_final][*j_final])=='.'))) {
+                eval_aux[*i_final+1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final]=1;
+                eval_aux[*i_final-1][*j_final]=1;
+                eval_aux[*i_final][*j_final+1]=1;
+                eval_aux[*i_final][*j_final-1]=1;
                 return 0;
             }else{
                 return 1;
@@ -1420,6 +2047,14 @@ int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
 
         if (((*i_final)==(*i_inicial+1)) && ((*j_final)==(*j_inicial-1))) {//(+1,-1)
             if ((*i_final<8)&&(*j_final>=0)&&(((tablero[*i_final][*j_final])>='a')||((tablero[*i_final][*j_final])=='.'))) {
+                eval_aux[*i_final+1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final]=1;
+                eval_aux[*i_final-1][*j_final]=1;
+                eval_aux[*i_final][*j_final+1]=1;
+                eval_aux[*i_final][*j_final-1]=1;
                 return 0;
             }else{
                 return 1;
@@ -1428,6 +2063,14 @@ int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
 
         if (((*i_final)==(*i_inicial+1)) && ((*j_final)==(*j_inicial))) {//(+1,0)
             if ((*i_final<8)&&(((tablero[*i_final][*j_final])>='a')||((tablero[*i_final][*j_final])=='.'))) {
+                eval_aux[*i_final+1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final]=1;
+                eval_aux[*i_final-1][*j_final]=1;
+                eval_aux[*i_final][*j_final+1]=1;
+                eval_aux[*i_final][*j_final-1]=1;
                 return 0;
             }else{
                 return 1;
@@ -1436,6 +2079,14 @@ int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
 
         if (((*i_final)==(*i_inicial-1)) && ((*j_final)==(*j_inicial))) {//(-1,0)
             if ((*i_final>=0)&&(((tablero[*i_final][*j_final])>='a')||((tablero[*i_final][*j_final])=='.'))) {
+                eval_aux[*i_final+1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final]=1;
+                eval_aux[*i_final-1][*j_final]=1;
+                eval_aux[*i_final][*j_final+1]=1;
+                eval_aux[*i_final][*j_final-1]=1;
                 return 0;
             }else{
                 return 1;
@@ -1444,6 +2095,14 @@ int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
 
         if (((*i_final)==(*i_inicial)) && ((*j_final)==(*j_inicial+1))) {//(0,+1)
             if ((*j_final<8)&&(((tablero[*i_final][*j_final])>='a')||((tablero[*i_final][*j_final])=='.'))) {
+                eval_aux[*i_final+1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final]=1;
+                eval_aux[*i_final-1][*j_final]=1;
+                eval_aux[*i_final][*j_final+1]=1;
+                eval_aux[*i_final][*j_final-1]=1;
                 return 0;
             }else{
                 return 1;
@@ -1452,6 +2111,14 @@ int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
 
         if (((*i_final)==(*i_inicial)) && ((*j_final)==(*j_inicial-1))) {//(0,-1)
             if ((*j_final>=0)&&(((tablero[*i_final][*j_final])>='a')||((tablero[*i_final][*j_final])=='.'))) {
+                eval_aux[*i_final+1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final]=1;
+                eval_aux[*i_final-1][*j_final]=1;
+                eval_aux[*i_final][*j_final+1]=1;
+                eval_aux[*i_final][*j_final-1]=1;
                 return 0;
             }else{
                 return 1;
@@ -1463,6 +2130,14 @@ int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
         
         if (((*i_final)==(*i_inicial+1)) && ((*j_final)==(*j_inicial+1))) {//(+1,+1)
             if (((*i_final<8)&&(*j_final<8)&&(((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')))||((tablero[*i_final][*j_final])=='.')) {
+                eval_aux[*i_final+1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final]=1;
+                eval_aux[*i_final-1][*j_final]=1;
+                eval_aux[*i_final][*j_final+1]=1;
+                eval_aux[*i_final][*j_final-1]=1;
                 return 0;
             }else{
                 return 1;
@@ -1471,6 +2146,14 @@ int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
         
         if (((*i_final)==(*i_inicial-1)) && ((*j_final)==(*j_inicial+1))) {//(-1,+1)
             if (((*i_final>=0)&&(*j_final<8)&&(((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')))||((tablero[*i_final][*j_final])=='.')) {
+                eval_aux[*i_final+1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final]=1;
+                eval_aux[*i_final-1][*j_final]=1;
+                eval_aux[*i_final][*j_final+1]=1;
+                eval_aux[*i_final][*j_final-1]=1;
                 return 0;
             }else{
                 return 1;
@@ -1479,6 +2162,14 @@ int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
 
         if (((*i_final)==(*i_inicial-1)) && ((*j_final)==(*j_inicial-1))) {//(-1,-1)
             if (((*i_final>=0)&&(*j_final>=0)&&(((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')))||((tablero[*i_final][*j_final])=='.')) {
+                eval_aux[*i_final+1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final]=1;
+                eval_aux[*i_final-1][*j_final]=1;
+                eval_aux[*i_final][*j_final+1]=1;
+                eval_aux[*i_final][*j_final-1]=1;
                 return 0;
             }else{
                 return 1;
@@ -1487,6 +2178,14 @@ int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
 
         if (((*i_final)==(*i_inicial+1)) && ((*j_final)==(*j_inicial-1))) {//(+1,-1)
             if (((*i_final<8)&&(*j_final>=0)&&(((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')))||((tablero[*i_final][*j_final])=='.')) {
+                eval_aux[*i_final+1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final]=1;
+                eval_aux[*i_final-1][*j_final]=1;
+                eval_aux[*i_final][*j_final+1]=1;
+                eval_aux[*i_final][*j_final-1]=1;
                 return 0;
             }else{
                 return 1;
@@ -1495,6 +2194,14 @@ int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
 
         if (((*i_final)==(*i_inicial+1)) && ((*j_final)==(*j_inicial))) {//(+1,0)
             if (((*i_final<8)&&(((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')))||((tablero[*i_final][*j_final])=='.')) {
+                eval_aux[*i_final+1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final]=1;
+                eval_aux[*i_final-1][*j_final]=1;
+                eval_aux[*i_final][*j_final+1]=1;
+                eval_aux[*i_final][*j_final-1]=1;
                 return 0;
             }else{
                 return 1;
@@ -1503,6 +2210,14 @@ int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
 
         if (((*i_final)==(*i_inicial-1)) && ((*j_final)==(*j_inicial))) {//(-1,0)
             if (((*i_final>=0)&&(((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')))||((tablero[*i_final][*j_final])=='.')) {
+                eval_aux[*i_final+1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final]=1;
+                eval_aux[*i_final-1][*j_final]=1;
+                eval_aux[*i_final][*j_final+1]=1;
+                eval_aux[*i_final][*j_final-1]=1;
                 return 0;
             }else{
                 return 1;
@@ -1511,6 +2226,14 @@ int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
 
         if (((*i_final)==(*i_inicial)) && ((*j_final)==(*j_inicial+1))) {//(0,+1)
             if (((*j_final<8)&&(((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')))||((tablero[*i_final][*j_final])=='.')) {
+                eval_aux[*i_final+1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final]=1;
+                eval_aux[*i_final-1][*j_final]=1;
+                eval_aux[*i_final][*j_final+1]=1;
+                eval_aux[*i_final][*j_final-1]=1;
                 return 0;
             }else{
                 return 1;
@@ -1519,16 +2242,25 @@ int reyes (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
 
         if (((*i_final)==(*i_inicial)) && ((*j_final)==(*j_inicial-1))) {//(0,-1)
             if (((*j_final>=0)&&(((tablero[*i_final][*j_final])>='A')&&((tablero[*i_final][*j_final])<='T')))||((tablero[*i_final][*j_final])=='.')) {
+                eval_aux[*i_final+1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final+1]=1;
+                eval_aux[*i_final-1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final-1]=1;
+                eval_aux[*i_final+1][*j_final]=1;
+                eval_aux[*i_final-1][*j_final]=1;
+                eval_aux[*i_final][*j_final+1]=1;
+                eval_aux[*i_final][*j_final-1]=1;
                 return 0;
             }else{
                 return 1;
             }
         }
+
     }
     return 1;
 }
 
-int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8]) {
+int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tablero[8][8],int eval_aux[8][8]) {
     
     int comprobar_diagonales=0, comprobar_ejes=0, i, j;
     
@@ -1541,7 +2273,7 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                         comprobar_ejes=1;
                     }
                 }
-                return comprobar_ejes;
+                
             }
             
             if (((*i_final)<(*i_inicial))&&((*j_final)==(*j_inicial))) {
@@ -1550,7 +2282,7 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                         comprobar_ejes=1;
                     }
                 }
-                return comprobar_ejes;
+                
             }
             
             if (((*j_final)>(*j_inicial))&&((*i_final)==(*i_inicial))) {
@@ -1559,7 +2291,7 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                         comprobar_ejes=1;
                     }
                 }
-                return comprobar_ejes;
+                
             }
             
             if (((*j_final)<(*j_inicial))&&((*i_final)==(*i_inicial))) {
@@ -1568,7 +2300,7 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                         comprobar_ejes=1;
                     }
                 }
-                return comprobar_ejes;
+                
             }
             
             if (((*i_final)>(*i_inicial))&&((*j_final)>(*j_inicial))) { //movimientos como alfil
@@ -1579,7 +2311,6 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                         }
                     }
                 }
-                return comprobar_diagonales;
             }
             
             if (((*i_final)>(*i_inicial))&&((*j_final)<(*j_inicial))) {
@@ -1590,7 +2321,6 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                         }
                     }
                 }
-                return comprobar_diagonales;
             }
             
             if (((*i_final)<(*i_inicial))&&((*j_final)<(*j_inicial))) {
@@ -1601,7 +2331,6 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                         }
                     }
                 }
-                return comprobar_diagonales;
             }
             
             if (((*i_final)<(*i_inicial))&&((*j_final)>(*j_inicial))) {
@@ -1612,14 +2341,89 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                         }
                     }
                 }
-                return comprobar_diagonales;
             }
+
+            if ((comprobar_ejes||comprobar_diagonales)==0)
+            {
+                for (j=(*j_final+1);j<8;j++){
+                    for (i=(*i_final+1);j<8;i++){
+                        do{
+                            if ((i<8)&&(j<8))
+                            {
+                                eval_aux[i][j]=1;
+                            }
+                        }while(tablero[i][j]=='.');
+                    }       
+                } 
+        
+                for (j=(*j_final+1);j<8;j++){
+                    for (i=(*i_final-1);j>=0;i--){
+                        do{
+                            if ((i<8)&&(j<8))
+                            {
+                                eval_aux[i][j]=1;
+                            }
+                        }while(tablero[i][j]=='.');
+                    }       
+                } 
+        
+                for (j=(*j_final-1);j>=0;j--){
+                    for (i=(*i_final-1);j>=0;i--){
+                        do{
+                            if ((i<8)&&(j<8))
+                            {
+                                eval_aux[i][j]=1;
+                            }
+                        }while(tablero[i][j]=='.');
+                    }       
+                } 
+        
+                for (j=(*j_final-1);j>=0;j--){
+                    for (i=(*i_final+1);j<8;i++){
+                        do{
+                            if ((i<8)&&(j<8))
+                            {
+                                eval_aux[i][j]=1;
+                            }
+                        }while(tablero[i][j]=='.');
+                    }       
+                } 
+                for (i=(*i_final+1); i<8; i++) {
+                    while((tablero[i][*j_final])=='.') {
+                        eval_aux[i][*j_final]=1;
+                    }
+                }
+            
+                for (i=(*i_final-1); i>=(0); i--) {
+                    while((tablero[i][*j_final])=='.') {
+                        eval_aux[i][*j_final]=1;
+                    }
+                }
+            
+                for (i=(*j_final+1); i<8; i++) {
+                    while ((tablero[*i_final][i])=='.') {
+                        eval_aux[*i_final][i]=1;
+                    }
+                }
+            
+                for (i=(*j_final-1); i>=(0); i--) {
+                    while ((tablero[*i_final][i])=='.') {
+                        eval_aux[*i_final][i]=1;
+                    }
+                }
+                
+            
+                return 0;
+            }
+
+            
         }else{
             return 1;
         }
     }
 
     if ((tablero[*i_inicial][*j_inicial])=='d') { //dama blancas
+
         if (((tablero[*i_final][*j_final]>='A')&&(tablero[*i_final][*j_final]<='T'))||(tablero[*i_final][*j_final]=='.')) {
             
             if (((*i_final)>(*i_inicial))&&((*j_final)==(*j_inicial))) {//movimientos como torre
@@ -1658,7 +2462,6 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                         }
                     }
                 }
-                return comprobar_diagonales;
             }else if (((*i_final)>(*i_inicial))&&((*j_final)<(*j_inicial))) {
                 for (j=*j_inicial+1; j<(*j_final); j++) {
                     for (i=*i_inicial-1; j>(*i_final); i--) {
@@ -1667,7 +2470,6 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                         }
                     }
                 }
-                return comprobar_diagonales;
             }else if (((*i_final)<(*i_inicial))&&((*j_final)<(*j_inicial))) {
                 for (j=*j_inicial-1; j>(*j_final); j--) {
                     for (i=*i_inicial-1; j>(*i_final); i--) {
@@ -1676,7 +2478,6 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                         }
                     }
                 }
-                return comprobar_diagonales;
             }else if (((*i_final)<(*i_inicial))&&((*j_final)>(*j_inicial))) {
                 for (j=*j_inicial-1; j>(*j_final); j--) {
                     for (i=*i_inicial+1; j<(*i_final); i++) {
@@ -1685,14 +2486,84 @@ int damas (int *i_inicial, int *j_inicial, int *i_final, int *j_final, char tabl
                         }
                     }
                 }
-                return comprobar_diagonales;
             }else{
                 return 1;
             }
+             
+            if ((comprobar_ejes||comprobar_diagonales)==0){
+                for (j=(*j_final+1);j<8;j++){
+                    for (i=(*i_final+1);j<8;i++){
+                        do{
+                            if ((i<8)&&(j<8))
+                            {
+                                eval_aux[i][j]=1;
+                            }
+                        }while(tablero[i][j]=='.');
+                    }       
+                } 
+        
+                for (j=(*j_final+1);j<8;j++){
+                    for (i=(*i_final-1);j>=0;i--){
+                        do{
+                            if ((i<8)&&(j<8))
+                            {
+                                eval_aux[i][j]=1;
+                            }
+                        }while(tablero[i][j]=='.');
+                    }       
+                } 
+        
+                for (j=(*j_final-1);j>=0;j--){
+                    for (i=(*i_final-1);j>=0;i--){
+                        do{
+                            if ((i<8)&&(j<8))
+                            {
+                                eval_aux[i][j]=1;
+                            }
+                        }while(tablero[i][j]=='.');
+                    }       
+                } 
+        
+                for (j=(*j_final-1);j>=0;j--){
+                    for (i=(*i_final+1);j<8;i++){
+                        do{
+                            if ((i<8)&&(j<8))
+                            {
+                                eval_aux[i][j]=1;
+                            }
+                        }while(tablero[i][j]=='.');
+                    }       
+                } 
+                for (i=(*i_final+1); i<8; i++) {
+                    while((tablero[i][*j_final])=='.') {
+                        eval_aux[i][*j_final]=1;
+                    }
+                }
             
-        }else{
-            return 1;
+                for (i=(*i_final-1); i>=(0); i--) {
+                    while((tablero[i][*j_final])=='.') {
+                        eval_aux[i][*j_final]=1;
+                    }
+                }
+            
+                for (i=(*j_final+1); i<8; i++) {
+                    while ((tablero[*i_final][i])=='.') {
+                        eval_aux[*i_final][i]=1;
+                    }
+                }
+            
+                for (i=(*j_final-1); i>=(0); i--) {
+                    while ((tablero[*i_final][i])=='.') {
+                        eval_aux[*i_final][i]=1;
+                    }
+                }
+                return 0;
+        
+            }else{
+                return 1;
+            }
         }
     }
     return 1;
 }
+
