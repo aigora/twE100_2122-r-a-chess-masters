@@ -5,11 +5,12 @@
 #include "chessmasters_piezas.h"
 #include "chessmasters_menu.h"
 #include "chessmasters_ficheros.h"
+#include <stdlib.h>
 
 typedef struct
 {
   int matriz[8][8];
-  
+
 } eval;
 
 int menu_principal();

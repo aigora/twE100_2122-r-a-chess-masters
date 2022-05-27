@@ -3,9 +3,9 @@
 int imprimir_reglas(){
     char caracteres;
     FILE *pf_reglas;
-  
+
     pf_reglas = fopen("reglas_ajedrez.txt", "r");
-            
+
 
     if (pf_reglas == NULL) {
         fclose (pf_reglas);
@@ -18,6 +18,7 @@ int imprimir_reglas(){
         printf ("%c", caracteres);
     }
     fclose(pf_reglas);
+    system("pause");
     return 0;
  }
 
@@ -30,7 +31,9 @@ int imprimir_reglas(){
     scanf("%s", blancas.name);
     printf("\nJugador de piezas negras, introduzca su nombre:");
     scanf("%s", negras.name);
-    
+
+    limpiar_pantalla();
+
     printf("Escojan uno de los slots de guardado:\n");
     printf("\nSlot 1\nSlot 2\nSlot 3\nSlot 4\nSlot 5\nSeleccione una opcion:");
 
@@ -52,7 +55,7 @@ int imprimir_reglas(){
                 {
                     fputc(tablero[i][j],slot1);
                 }
-            
+
             }
         }
         fclose (slot1);
@@ -83,7 +86,7 @@ int imprimir_reglas(){
                 {
                     fputc(tablero[i][j],slot2);
                 }
-            
+
             }
         }
         fclose (slot2);
@@ -99,8 +102,8 @@ int imprimir_reglas(){
         }
         printf("Partida guardada con éxito");
         menu_principal();
-        
- 
+
+
     }else if (seleccion_slot==3) {
         FILE *slot3 = fopen("slot3.txt","w");
         if (slot3 == NULL) {
@@ -114,7 +117,7 @@ int imprimir_reglas(){
                 {
                     fputc(tablero[i][j],slot3);
                 }
-            
+
             }
         }
         fclose (slot3);
@@ -130,7 +133,7 @@ int imprimir_reglas(){
         }
         printf("Partida guardada con éxito");
         menu_principal();
-       
+
 
     }else if (seleccion_slot==4) {
         FILE *slot4 = fopen("slot4.txt","w");
@@ -145,7 +148,7 @@ int imprimir_reglas(){
                 {
                     fputc(tablero[i][j],slot4);
                 }
-            
+
             }
         }
         fclose (slot4);
@@ -161,7 +164,7 @@ int imprimir_reglas(){
         }
         printf("Partida guardada con éxito");
         menu_principal();
-        
+
 
     }else if (seleccion_slot==5) {
         FILE *slot5 = fopen("slot5.txt","w");
@@ -176,7 +179,7 @@ int imprimir_reglas(){
                 {
                     fputc(tablero[i][j],slot5);
                 }
-            
+
             }
         }
         fclose (slot5);
@@ -192,7 +195,7 @@ int imprimir_reglas(){
         }
         printf("Partida guardada con éxito");
         menu_principal();
-        
+
 
     }
 
@@ -223,6 +226,7 @@ int cargar_partida(){
         }
         if (strcmp(blancas.name, vacio)==0) {
             printf("\nEl slot esta vacio");
+            limpiar_pantalla();
             cargar_partida();
         }else{
         printf("\nQuiere reanudar la partida %s VS %s ?(S/N):",blancas.name,negras.name );
@@ -269,7 +273,7 @@ int cargar_partida(){
             fclose (slot1);
             inicio_juego(&contador,tablero,mov_enroque);
         }
-        
+
 
     }else if (seleccion_slot==2) {
 
@@ -329,7 +333,7 @@ int cargar_partida(){
             fclose (slot2);
             inicio_juego(&contador,tablero,mov_enroque);
         }
-    
+
     }else if (seleccion_slot==3) {
         FILE *valores3 = fopen("valores3.csv","r");
         if (valores3 == NULL) {
@@ -386,7 +390,7 @@ int cargar_partida(){
             }
             fclose (slot3);
             inicio_juego(&contador,tablero,mov_enroque);
-        } 
+        }
     }else if (seleccion_slot==4) {
 
         FILE *valores4 = fopen("valores4.csv","r");

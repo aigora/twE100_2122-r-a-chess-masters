@@ -17,3 +17,43 @@
 1653469604 source:c:\users\upm\desktop\chessmasters\chessmasters_project\chessmasters_piezas.c
 	"chessmasters_piezas.h"
 
+1653692851 source:c:\users\upm\documents\github\twe100_2122-r-a-chess-masters\codeblocks project\chessmasters_ficheros.c
+	"chessmasters_ficheros.h"
+
+1653692851 c:\users\upm\documents\github\twe100_2122-r-a-chess-masters\codeblocks project\chessmasters_ficheros.h
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	"chessmasters_funciones.h"
+	"chessmasters_menu.h"
+
+1653692768 c:\users\upm\documents\github\twe100_2122-r-a-chess-masters\codeblocks project\chessmasters_funciones.h
+	<stdio.h>
+	"chessmasters_piezas.h"
+	"chessmasters_menu.h"
+	"chessmasters_ficheros.h"
+	<stdlib.h>
+
+1653690873 c:\users\upm\documents\github\twe100_2122-r-a-chess-masters\codeblocks project\chessmasters_piezas.h
+	<stdio.h>
+
+1653690873 c:\users\upm\documents\github\twe100_2122-r-a-chess-masters\codeblocks project\chessmasters_menu.h
+	<stdio.h>
+	"chessmasters_funciones.h"
+	"chessmasters_ficheros.h"
+
+1653692145 source:c:\users\upm\documents\github\twe100_2122-r-a-chess-masters\codeblocks project\chessmasters_funciones.c
+	"chessmasters_funciones.h"
+
+1653690873 source:c:\users\upm\documents\github\twe100_2122-r-a-chess-masters\codeblocks project\chessmasters_main.c
+	<stdio.h>
+	"chessmasters_piezas.h"
+	"chessmasters_funciones.h"
+	"chessmasters_menu.h"
+
+1653691935 source:c:\users\upm\documents\github\twe100_2122-r-a-chess-masters\codeblocks project\chessmasters_menu.c
+	"chessmasters_menu.h"
+
+1653691596 source:c:\users\upm\documents\github\twe100_2122-r-a-chess-masters\codeblocks project\chessmasters_piezas.c
+	"chessmasters_piezas.h"
+

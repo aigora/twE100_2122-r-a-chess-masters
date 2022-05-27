@@ -1,5 +1,5 @@
 #include "chessmasters_menu.h"
-#include "chessmasters_ficheros.h"
+
 
 
 int menu_principal(){
@@ -7,26 +7,28 @@ int menu_principal(){
     int menu,contador=1, mov_enroque[6]={0,0,0,0,0,0};
     char c;
     char tablero[8][8];
-    
 
+    limpiar_pantalla();
     //switch menu principal
     do{
+
         printf("\n\nAJEDREZ\n\n");
         printf("\n1.Nueva partida\n2.Cargar partida\n3.Reglas Ajedrez\nSeleccione una opcion:");
         scanf("%d",&menu);
-        
+
     }while(menu<1||menu>4);
- 
+
     switch(menu){
         case 1: //nueva partida
-            printf("\nINICIANDO  PARTIDA\nPara acceder al menu durante la partida pulse 'M'\nPara ver si puede enrocar pulse 'E'\nPara finalizar la partida en tablas pulse 'T'\n");
+            printf("\nINICIANDO  PARTIDA\nPara acceder al menu durante la partida pulse 'M'\nPara finalizar la partida en tablas pulse 'T'\n");
+            //Para ver si puede enrocar pulse 'E'\n
             tablero_inicial(tablero);
             inicio_juego(&contador,tablero,mov_enroque);
             return 0;
 
         case 2: //cargar partida
             cargar_partida();
-    
+
         case 3://Instrucciones Ajedrez
             imprimir_reglas();
             menu_principal();
@@ -41,7 +43,7 @@ int menu_partida(int *i_inicial, int *j_inicial, int *i_final,   int *j_final, i
     printf("1.Volver a la partida\n2.Guardar partida\n3.Salir a menu principal\nSeleccione una opcion:");
     scanf("%d",&seleccion_menu);
     }while ((seleccion_menu!=1)&&(seleccion_menu!=2)&&(seleccion_menu!=3));
-    
+    limpiar_pantalla();
     switch (seleccion_menu)
     {
     case 1://continuar
@@ -55,7 +57,7 @@ int menu_partida(int *i_inicial, int *j_inicial, int *i_final,   int *j_final, i
         menu_principal();
         return 0;
         break;
-    
+
     default:
         printf("Error");
         break;

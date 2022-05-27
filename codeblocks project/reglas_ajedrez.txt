@@ -1,43 +1,57 @@
-Turnos:
+	Turnos:
+
 	-Empiezan las blancas
 	-Un movimiento por turno
-Movimientos:
-	-Peon: se mueve exclusivamente hacia adelante una casilla, si esta está vacia.
+	Movimientos:
+
+	-Peon:  Se mueve exclusivamente hacia adelante una casilla, si esta está vacia.
 		En su primer movimiento tambien puede avanzar dos casillas hacia adelante.
 		Capturan en diagonal con radio 1 casilla. No podran realizar este movimiento si no es para capturar.
+
 	-Torre: se mueve en horizontal o en vertical, exclusivamente, tantas casillas como quiera, pero solo en una
 		direccion en cada turno.
-	-Alfil: se mueve en diagonal tantas casillas como quiera, pero solo en una direccion por turno.
-	-Caballo: se mueve en forma de L, es decir, avanza dos casillas en horizontal o en vertical y sucesivamente
+
+	-Alfil: Se mueve en diagonal tantas casillas como quiera, pero solo en una direccion por turno.
+
+	-Caballo: Se mueve en forma de L, es decir, avanza dos casillas en horizontal o en vertical y sucesivamente
 		una en la direccion perpendicular a la del movimiento ya hecho.
-		El caballo puede saltar sobre cualquier pieza de su mismo color o el de su adversario. La captura ocurre
-		cuando una pieza del adversario esta en la casilla de destino del caballo.
-	-Dama: se mueve en horizontal, vertical o diagonal tantas casillas como quiera, pero solo en una direccion
+		El caballo puede saltar sobre cualquier pieza de su mismo color o el de su adversario. 
+		La captura ocurre cuando una pieza del adversario esta en la casilla de destino del caballo.
+
+	-Dama: Se mueve en horizontal, vertical o diagonal tantas casillas como quiera, pero solo en una direccion
 		cada turno.
-	-Rey: se mueve en cualquier direccion una sola casilla a la vez. Solo podra moverse a aquellas casillas no
-		no amenazadas por el adversario.
+
+	-Rey: Se mueve en cualquier direccion una sola casilla a la vez. Solo podra moverse a aquellas casillas no
+		 amenazadas por el adversario.
 		Tambien podra capturar, pero solo si la casilla de la pieza a capturar no esta defendida.
+
 	-Enroque: consiste en mover el Rey dos escaques hacia la Torre, y luego pasar la torre al otro lado del
 		Rey junto al escaque que el Rey acaba de cruzar. Se considera un unico movimiento.
 		Esta sujeto a tres condiciones:
 		-Que no se hayan movido todavia ni el Rey ni la Torre a enrocar.
 		-El Rey no puede estar en Jaque, ni pasar o terminar el movimiento por una casilla amenazada.
 		-Que no haya ninguna pieza entre el Rey y la Torre, ya sea propia o contraria.
+
 	-Captura al paso del Peon: cuando un peon ha avanzado tres casillas desde el inicio y un peon del adversario
 		en las columnas contiguas avanza dos casillas para no entrar a una amenaza, se considera captura mover
 		el peón en diagonal a la casilla donde el adversario si habria estado amenazado en el movimiento anterior..
 		Se debe llevar a cabo inmediatamente. Si no, ya no se considerara captura.
+
 	-Coronacion del Peon: si un Peon avanza hasta la ultima fila, entonces debe ser cambiado como parte
 		del movimiento y en la misma casilla por una dama, torre, alfil o caballo de su mismo color, 
 		siendo la opcion del jugador la eleccion.
+
 	-Jaque: ocurre cuando un Rey esta siendo amenazado por una pieza del adversario.
 		El Rey en jaque debera moverse a una casilla que no este amenazada, capturar a la pieza que
 		lo amenaza o bloquear el jaque con una pieza entre el rey y la pieza del adversario que lo 
 		amenaza. En caso de que no sean posibles ninguno de estos tres movimientos, se declarara Jaque Mate, y
 		el adversario habra ganado la partida.
+
 	-Captura: consiste en mover una pieza propia a una casilla donde se encuentre una del adversario, eliminandola
 		del tablero.
-Condiciones:
+
+	Condiciones:
+
 	-Amenaza: una pieza es amenazada cuando se encuentra en una posible casilla de destino de una pieza del 
 		adversario.
 	-Defensa: una pieza es defendida cuando se encuentra en una casilla en la que, en caso de ser capturada, 
