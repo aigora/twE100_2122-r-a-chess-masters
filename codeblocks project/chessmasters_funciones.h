@@ -12,10 +12,6 @@ typedef struct
   
 } eval;
 
-
-typedef struct{
-        char name[30];
-} player;
 int menu_principal();
 int menu_partida(int *i_inicial, int *j_inicial, int *i_final,   int *j_final, int *contador_movimientos, char tablero[8][8],int mov_enroque[6]);
 
@@ -32,6 +28,6 @@ void coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tab
 void enrocar(int mov_enroque[6]);
 void matrices_evaluacion(int blancas_defensa[8][8],int negras_defensa[8][8]);
 void inicializar_matrices(eval piezas[32]);
-id coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tablero[8][8]);
+void coronar(int *i_inicial, int *j_inicial,int *i_final, int *j_final, char tablero[8][8]);
 
 #endif /* chessmasters_funciones_h */

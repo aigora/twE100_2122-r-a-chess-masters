@@ -1,4 +1,5 @@
 #include "chessmasters_ficheros.h"
+
 int imprimir_reglas(){
     char caracteres;
     FILE *pf_reglas;
